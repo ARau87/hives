@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'hives_colors.dart';
+
 /// Hives App Theme Configuration
 class AppTheme {
   // Private constructor to prevent instantiation
@@ -232,6 +234,7 @@ class AppTheme {
           borderRadius: BorderRadius.vertical(top: Radius.circular(28)),
         ),
       ),
+      extensions: [HivesColors.light],
     );
   }
 
@@ -320,6 +323,7 @@ class AppTheme {
           borderRadius: BorderRadius.vertical(top: Radius.circular(28)),
         ),
       ),
+      extensions: [HivesColors.dark],
     );
   }
 }
