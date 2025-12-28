@@ -1,18 +1,46 @@
 import 'package:flutter/material.dart';
 
 import '../theme/hives_colors.dart';
+import '../theme/hives_component_theme.dart';
+import '../theme/hives_spacings.dart';
 
+/// A customizable button widget with highlight gradient and animation effects.
+///
+/// [HighlightButton] displays a button with a honey-to-orange gradient,
+/// scale animation on tap, and support for loading and disabled states.
+/// The button can optionally include an icon alongside the text.
 class HighlightButton extends StatefulWidget {
+  /// The text label displayed on the button.
   final String label;
+
+  /// Callback invoked when the button is tapped.
   final VoidCallback onPressed;
+
+  /// Whether the button is displaying a loading indicator.
   final bool isLoading;
+
+  /// Whether the button is enabled for interaction.
   final bool isEnabled;
+
+  /// Custom padding for the button content.
   final EdgeInsets? padding;
+
+  /// Fixed width of the button, or null for flexible width.
   final double? width;
+
+  /// Fixed height of the button, or null to use default height.
   final double? height;
+
+  /// Custom text style for the button label.
   final TextStyle? textStyle;
+
+  /// Optional icon widget to display in the button.
   final Widget? icon;
+
+  /// Whether the icon appears before (true) or after (false) the label.
   final bool iconLeading;
+
+  /// Duration of the tap animation effect.
   final Duration animationDuration;
 
   const HighlightButton({
@@ -46,9 +74,16 @@ class _HighlightButtonState extends State<HighlightButton>
       duration: widget.animationDuration,
       vsync: this,
     );
-    _scaleAnimation = Tween<double>(begin: 1.0, end: 0.95).animate(
-      CurvedAnimation(parent: _animationController, curve: Curves.easeInOut),
-    );
+  }
+
+  void _initializeAnimation(double buttonScaleStart, double buttonScaleEnd) {
+    _scaleAnimation =
+        Tween<double>(begin: buttonScaleStart, end: buttonScaleEnd).animate(
+          CurvedAnimation(
+            parent: _animationController,
+            curve: Curves.easeInOut,
+          ),
+        );
   }
 
   @override
@@ -69,8 +104,17 @@ class _HighlightButtonState extends State<HighlightButton>
   @override
   Widget build(BuildContext context) {
     final colors = Theme.of(context).hivesColors;
+    final componentTheme = context.hivesComponentTheme;
+    final spacings =
+        Theme.of(context).extension<HivesSpacings>() ?? HivesSpacings.standard;
     final isDisabled = !widget.isEnabled || widget.isLoading;
-    final buttonHeight = widget.height ?? 56.0;
+    final buttonHeight = widget.height ?? componentTheme.buttonHeight;
+
+    // Initialize animation with theme values on first build
+    _initializeAnimation(
+      componentTheme.buttonScaleStart,
+      componentTheme.buttonScaleEnd,
+    );
 
     return ScaleTransition(
       scale: _scaleAnimation,
@@ -84,8 +128,12 @@ class _HighlightButtonState extends State<HighlightButton>
               gradient: isDisabled
                   ? LinearGradient(
                       colors: [
-                        colors.honey.withValues(alpha: 0.5),
-                        colors.orange.withValues(alpha: 0.5),
+                        colors.honey.withValues(
+                          alpha: componentTheme.disabledOpacity,
+                        ),
+                        colors.orange.withValues(
+                          alpha: componentTheme.disabledOpacity,
+                        ),
                       ],
                       begin: Alignment.centerLeft,
                       end: Alignment.centerRight,
@@ -95,33 +143,42 @@ class _HighlightButtonState extends State<HighlightButton>
                       begin: Alignment.centerLeft,
                       end: Alignment.centerRight,
                     ),
-              borderRadius: BorderRadius.circular(12),
+              borderRadius: BorderRadius.circular(componentTheme.borderRadius),
               boxShadow: isDisabled
                   ? null
                   : [
                       BoxShadow(
-                        color: colors.honey.withValues(alpha: 0.3),
-                        blurRadius: 8,
-                        offset: const Offset(0, 4),
+                        color: colors.honey.withValues(
+                          alpha: componentTheme.shadowOpacity,
+                        ),
+                        blurRadius: componentTheme.shadowBlurRadius,
+                        offset: componentTheme.shadowOffset,
                       ),
                     ],
             ),
             child: InkWell(
               onTap: _onPressed,
-              borderRadius: BorderRadius.circular(12),
-              splashColor: Colors.white.withValues(alpha: 0.2),
-              highlightColor: Colors.white.withValues(alpha: 0.1),
+              borderRadius: BorderRadius.circular(componentTheme.borderRadius),
+              splashColor: Colors.white.withValues(
+                alpha: componentTheme.splashOpacity,
+              ),
+              highlightColor: Colors.white.withValues(
+                alpha: componentTheme.highlightOpacity,
+              ),
               child: Padding(
                 padding:
                     widget.padding ??
-                    const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+                    EdgeInsets.symmetric(
+                      horizontal: spacings.xxl,
+                      vertical: spacings.lg,
+                    ),
                 child: widget.isLoading
                     ? Center(
                         child: SizedBox(
-                          width: 20,
-                          height: 20,
+                          width: componentTheme.loadingIndicatorSize,
+                          height: componentTheme.loadingIndicatorSize,
                           child: CircularProgressIndicator(
-                            strokeWidth: 2,
+                            strokeWidth: componentTheme.loadingStrokeWidth,
                             valueColor: AlwaysStoppedAnimation<Color>(
                               colors.honeyDark,
                             ),
@@ -138,16 +195,19 @@ class _HighlightButtonState extends State<HighlightButton>
   }
 
   Widget _buildContent(BuildContext context) {
+    final componentTheme = context.hivesComponentTheme;
+    final textStyle =
+        widget.textStyle ??
+        Theme.of(context).textTheme.labelLarge?.copyWith(
+          color: Colors.white,
+          fontWeight: FontWeight.w600,
+        );
+
     if (widget.icon == null) {
       return Center(
         child: Text(
           widget.label,
-          style:
-              widget.textStyle ??
-              Theme.of(context).textTheme.labelLarge?.copyWith(
-                color: Colors.white,
-                fontWeight: FontWeight.w600,
-              ),
+          style: textStyle,
           textAlign: TextAlign.center,
         ),
       );
@@ -159,21 +219,22 @@ class _HighlightButtonState extends State<HighlightButton>
         mainAxisAlignment: MainAxisAlignment.center,
         mainAxisSize: MainAxisSize.min,
         children: [
-          if (widget.iconLeading) ...[widget.icon!, const SizedBox(width: 8)],
+          if (widget.iconLeading) ...[
+            widget.icon!,
+            SizedBox(width: componentTheme.iconTextSpacing),
+          ],
           Flexible(
             child: Text(
               widget.label,
-              style:
-                  widget.textStyle ??
-                  Theme.of(context).textTheme.labelLarge?.copyWith(
-                    color: Colors.white,
-                    fontWeight: FontWeight.w600,
-                  ),
+              style: textStyle,
               textAlign: TextAlign.center,
               overflow: TextOverflow.ellipsis,
             ),
           ),
-          if (!widget.iconLeading) ...[const SizedBox(width: 8), widget.icon!],
+          if (!widget.iconLeading) ...[
+            SizedBox(width: componentTheme.iconTextSpacing),
+            widget.icon!,
+          ],
         ],
       ),
     );

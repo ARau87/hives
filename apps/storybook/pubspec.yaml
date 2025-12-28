@@ -10,6 +10,7 @@ dependencies:
   flutter:
     sdk: flutter
   cupertino_icons: ^1.0.8
+  widgetbook_annotation: ^3.9.0
   widgetbook: ^3.20.2
 
   # local dependencies
@@ -19,6 +20,7 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^6.0.0
-  widgetbook_annotation: ^3.9.0
+  widgetbook_generator: ^3.20.1
+  build_runner: ^2.1.10
 flutter:
   uses-material-design: true

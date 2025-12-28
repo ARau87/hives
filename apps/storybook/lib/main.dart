@@ -1,19 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:ui/ui.dart';
 import 'package:widgetbook/widgetbook.dart';
+import 'package:widgetbook_annotation/widgetbook_annotation.dart' as widgetbook;
 
-import 'usecases/highlight_button_usecases.dart';
+import 'main.directories.g.dart';
 
 void main() {
   runApp(const HivesWidgetbook());
 }
 
+@widgetbook.App()
 class HivesWidgetbook extends StatelessWidget {
   const HivesWidgetbook({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Widgetbook.material(
+      // Use generated directories from annotations
+      directories: directories,
+
       // Available addons for testing components
       addons: [
         MaterialThemeAddon(
@@ -35,29 +40,6 @@ class HivesWidgetbook extends StatelessWidget {
           localizationsDelegates: [
             DefaultMaterialLocalizations.delegate,
             DefaultWidgetsLocalizations.delegate,
-          ],
-        ),
-      ],
-
-      // Component catalog
-      directories: [
-        WidgetbookCategory(
-          name: 'Widgets',
-          children: [
-            WidgetbookFolder(
-              name: 'Buttons',
-              children: [
-                WidgetbookFolder(
-                  name: 'Highlight Button',
-                  children: [
-                    WidgetbookComponent(
-                      name: 'Highlight Button States',
-                      useCases: highlightButtonUseCases,
-                    ),
-                  ],
-                ),
-              ],
-            ),
           ],
         ),
       ],
