@@ -22,6 +22,9 @@ melos:
     bootstrap:
       runPubGetInParallel: true
       runPubGetOffline: false
+      hooks:
+        post: |
+          melos run build
 
     version:
       branch: main
@@ -75,8 +78,8 @@ melos:
       description: Clean all packages
 
     build:
-      run: melos exec -- "dart pub run build_runner build --delete-conflicting-outputs"
-      description: Run build_runner in all packages
-      select-package:
-        depends-on: "build_runner"
-
+      exec: |
+        dart pub run build_runner build
+      description: Run build_runner in all packages with build_runner dev dependency
+      packageFilters:
+        dependsOn: build_runner
