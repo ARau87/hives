@@ -45,8 +45,56 @@ class HivesWidgetbook extends StatelessWidget {
             WidgetbookFolder(
               name: 'Buttons',
               children: [
+                WidgetbookFolder(
+                  name: 'Highlight Button',
+                  children: [
+                    WidgetbookComponent(
+                      name: 'Highlight Button States',
+                      useCases: [
+                        WidgetbookUseCase(
+                          name: 'Default',
+                          builder: (context) => Center(
+                            child: SizedBox(
+                              width: 280,
+                              child: HighlightButton(
+                                label: 'Get Started',
+                                onPressed: () {},
+                              ),
+                            ),
+                          ),
+                        ),
+                        WidgetbookUseCase(
+                          name: 'Loading',
+                          builder: (context) => Center(
+                            child: SizedBox(
+                              width: 280,
+                              child: HighlightButton(
+                                label: 'Loading...',
+                                onPressed: () {},
+                                isLoading: true,
+                              ),
+                            ),
+                          ),
+                        ),
+                        WidgetbookUseCase(
+                          name: 'Disabled',
+                          builder: (context) => Center(
+                            child: SizedBox(
+                              width: 280,
+                              child: HighlightButton(
+                                label: 'Disabled',
+                                onPressed: () {},
+                                isEnabled: false,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
                 WidgetbookComponent(
-                  name: 'Button Examples',
+                  name: 'Material Buttons',
                   useCases: [
                     WidgetbookUseCase(
                       name: 'Default Button',
