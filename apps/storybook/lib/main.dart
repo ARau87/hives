@@ -125,24 +125,6 @@ class HivesWidgetbook extends StatelessWidget {
                             ),
                           ),
                         ),
-                        WidgetbookUseCase(
-                          name: 'With Icon (Loading)',
-                          builder: (context) => Center(
-                            child: SizedBox(
-                              width: 280,
-                              child: HighlightButton(
-                                label: 'Processing...',
-                                onPressed: () {},
-                                icon: const Icon(
-                                  Icons.check_circle,
-                                  color: Colors.white,
-                                  size: 20,
-                                ),
-                                isLoading: true,
-                              ),
-                            ),
-                          ),
-                        ),
                       ],
                     ),
                   ],
