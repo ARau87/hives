@@ -11,7 +11,9 @@ dev_dependencies:
 
 workspace:
   - packages/shared
+  - packages/ui
   - apps/mobile
+  - apps/storybook
 
 melos:
   name: hives

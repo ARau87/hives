@@ -1,0 +1,21 @@
+name: storybook
+description: "Storybook for the Hives project"
+publish_to: 'none'
+version: 0.0.1
+resolution: workspace
+
+environment:
+  sdk: ^3.10.3
+dependencies:
+  flutter:
+    sdk: flutter
+  cupertino_icons: ^1.0.8
+  widgetbook: ^3.20.2
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+  widgetbook_annotation: ^3.9.0
+flutter:
+  uses-material-design: true
