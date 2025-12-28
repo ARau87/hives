@@ -1,0 +1,80 @@
+name: hives_workspace
+description: A monorepo workspace for the Hives project managed with Melos
+version: 1.0.0
+publish_to: none
+
+environment:
+  sdk: '^3.10.3'
+
+dev_dependencies:
+  melos: ^7.3.0
+
+workspace:
+  - packages/shared
+  - apps/mobile
+
+melos:
+  name: hives
+
+  command:
+    bootstrap:
+      runPubGetInParallel: true
+      runPubGetOffline: false
+
+    version:
+      branch: main
+      message: |
+        chore(release): publish packages
+        
+        {new_package_versions}
+      updateGitTagRefs: true
+      workspaceChangelog: true
+
+    clean:
+      hooks:
+        post: |
+          melos exec -- "rm -rf build coverage .dart_tool"
+
+  scripts:
+    analyze:
+      run: melos exec -- "dart analyze ."
+      description: Run Dart analyzer in all packages
+
+    format:
+      run: melos exec -- "dart format ."
+      description: Format all Dart files
+
+    format:check:
+      run: melos exec -- "dart format --set-exit-if-changed ."
+      description: Check if all Dart files are formatted
+
+    test:
+      run: melos exec --fail-fast -- "dart test"
+      description: Run tests in all packages
+      select-package:
+        dir-exists: test
+
+    test:coverage:
+      run: melos exec --fail-fast -- "dart test --coverage=coverage"
+      description: Run tests with coverage in all packages
+      select-package:
+        dir-exists: test
+
+    get:
+      run: melos exec -- "dart pub get"
+      description: Run pub get in all packages
+
+    upgrade:
+      run: melos exec -- "dart pub upgrade"
+      description: Run pub upgrade in all packages
+
+    clean:
+      run: melos clean
+      description: Clean all packages
+
+    build:
+      run: melos exec -- "dart pub run build_runner build --delete-conflicting-outputs"
+      description: Run build_runner in all packages
+      select-package:
+        depends-on: "build_runner"
+
