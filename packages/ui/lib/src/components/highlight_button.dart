@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 
 import '../theme/hives_colors.dart';
 
-/// Highlight Button component - primary CTA button with gradient
 class HighlightButton extends StatefulWidget {
   final String label;
   final VoidCallback onPressed;

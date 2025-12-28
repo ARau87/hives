@@ -89,138 +89,63 @@ class HivesWidgetbook extends StatelessWidget {
                             ),
                           ),
                         ),
+                        WidgetbookUseCase(
+                          name: 'With Icon (Leading)',
+                          builder: (context) => Center(
+                            child: SizedBox(
+                              width: 280,
+                              child: HighlightButton(
+                                label: 'Continue',
+                                onPressed: () {},
+                                icon: const Icon(
+                                  Icons.arrow_forward,
+                                  color: Colors.white,
+                                  size: 20,
+                                ),
+                                iconLeading: true,
+                              ),
+                            ),
+                          ),
+                        ),
+                        WidgetbookUseCase(
+                          name: 'With Icon (Trailing)',
+                          builder: (context) => Center(
+                            child: SizedBox(
+                              width: 280,
+                              child: HighlightButton(
+                                label: 'Get Started',
+                                onPressed: () {},
+                                icon: const Icon(
+                                  Icons.arrow_forward,
+                                  color: Colors.white,
+                                  size: 20,
+                                ),
+                                iconLeading: false,
+                              ),
+                            ),
+                          ),
+                        ),
+                        WidgetbookUseCase(
+                          name: 'With Icon (Loading)',
+                          builder: (context) => Center(
+                            child: SizedBox(
+                              width: 280,
+                              child: HighlightButton(
+                                label: 'Processing...',
+                                onPressed: () {},
+                                icon: const Icon(
+                                  Icons.check_circle,
+                                  color: Colors.white,
+                                  size: 20,
+                                ),
+                                isLoading: true,
+                              ),
+                            ),
+                          ),
+                        ),
                       ],
                     ),
                   ],
-                ),
-                WidgetbookComponent(
-                  name: 'Material Buttons',
-                  useCases: [
-                    WidgetbookUseCase(
-                      name: 'Default Button',
-                      builder: (context) => Center(
-                        child: ElevatedButton(
-                          onPressed: () {},
-                          child: const Text('Click Me'),
-                        ),
-                      ),
-                    ),
-                    WidgetbookUseCase(
-                      name: 'Outlined Button',
-                      builder: (context) => Center(
-                        child: OutlinedButton(
-                          onPressed: () {},
-                          child: const Text('Click Me'),
-                        ),
-                      ),
-                    ),
-                    WidgetbookUseCase(
-                      name: 'Text Button',
-                      builder: (context) => Center(
-                        child: TextButton(
-                          onPressed: () {},
-                          child: const Text('Click Me'),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-            WidgetbookFolder(
-              name: 'Text',
-              children: [
-                WidgetbookComponent(
-                  name: 'Typography',
-                  useCases: [
-                    WidgetbookUseCase(
-                      name: 'Headlines',
-                      builder: (context) => Padding(
-                        padding: const EdgeInsets.all(16.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'Display Large',
-                              style: Theme.of(context).textTheme.displayLarge,
-                            ),
-                            const SizedBox(height: 8),
-                            Text(
-                              'Display Medium',
-                              style: Theme.of(context).textTheme.displayMedium,
-                            ),
-                            const SizedBox(height: 8),
-                            Text(
-                              'Display Small',
-                              style: Theme.of(context).textTheme.displaySmall,
-                            ),
-                            const SizedBox(height: 8),
-                            Text(
-                              'Headline Large',
-                              style: Theme.of(context).textTheme.headlineLarge,
-                            ),
-                            const SizedBox(height: 8),
-                            Text(
-                              'Headline Medium',
-                              style: Theme.of(context).textTheme.headlineMedium,
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                    WidgetbookUseCase(
-                      name: 'Body Text',
-                      builder: (context) => Padding(
-                        padding: const EdgeInsets.all(16.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'Body Large',
-                              style: Theme.of(context).textTheme.bodyLarge,
-                            ),
-                            const SizedBox(height: 8),
-                            Text(
-                              'Body Medium',
-                              style: Theme.of(context).textTheme.bodyMedium,
-                            ),
-                            const SizedBox(height: 8),
-                            Text(
-                              'Body Small',
-                              style: Theme.of(context).textTheme.bodySmall,
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ],
-        ),
-        // Add more categories here as you build more components
-        WidgetbookCategory(
-          name: 'Examples',
-          children: [
-            WidgetbookComponent(
-              name: 'Sample Screen',
-              useCases: [
-                WidgetbookUseCase(
-                  name: 'Home Screen',
-                  builder: (context) => Scaffold(
-                    appBar: AppBar(title: const Text('Hives')),
-                    body: const Center(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(Icons.hive, size: 64),
-                          SizedBox(height: 16),
-                          Text('Welcome to Hives'),
-                        ],
-                      ),
-                    ),
-                  ),
                 ),
               ],
             ),
