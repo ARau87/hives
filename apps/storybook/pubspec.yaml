@@ -12,6 +12,9 @@ dependencies:
   cupertino_icons: ^1.0.8
   widgetbook: ^3.20.2
 
+  # local dependencies
+  ui: ^0.0.1
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

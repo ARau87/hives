@@ -1,32 +1,83 @@
-# UI Package with Widgetbook
+# Hives UI Package
 
-Dies ist das UI-Paket für das Hives-Projekt mit integriertem Widgetbook 3.20.2.
+Ein gemeinsam genutztes UI-Paket für die Hives-Anwendung, das ein konsistentes Material Design Theme bereitstellt.
 
-## Setup
+## Features
 
-Das Paket verwendet Widgetbook zur Katalogisierung und Dokumentation von Flutter-Widgets.
-
-### Widgetbook-Anwendung
-
-Die Widgetbook-Anwendung befindet sich in `widgetbook/main.dart`. Diese wird als separate Flutter-App gebaut und ermöglicht die interaktive Dokumentation und Vorschau aller UI-Komponenten.
-
-### Dependencies
-
-- `widgetbook: ^3.20.2` - Das Widgetbook-Framework
-- `widgetbook_annotation: ^3.20.2` - Annotationen für Widgetbook
+- 🎨 **Material 3 Design** - Modernes, ansprechendes Design-System
+- 🌓 **Hell- und Dunkelmodus** - Vollständige Unterstützung für beide Themes
+- 🎯 **Hives-Branding** - Farben inspiriert von Honig (Amber), Holz (Brown) und Natur (Green)
+- 📱 **Responsive Komponenten** - Konsistente Button-, Card-, Input- und Dialog-Stile
 
 ## Verwendung
 
-Um die Widgetbook-Anwendung zu starten:
+### Theme importieren
 
-```bash
-cd packages/ui
-flutter run -t widgetbook/main.dart
+```dart
+import 'package:ui/ui.dart';
 ```
 
-## Widgets hinzufügen
+### In einer Flutter-App verwenden
 
-1. Erstellen Sie Ihre Widget-Komponenten in der `lib/`-Struktur
-2. Erstellen Sie entsprechende Widgetbook-Aufzeichnungen in der `widgetbook/`-Struktur
-3. Verwenden Sie die `@WidgetbookTest` Annotation um automatisch Widgetbook-Einträge zu generieren
+```dart
+MaterialApp(
+  theme: AppTheme.lightTheme,
+  darkTheme: AppTheme.darkTheme,
+  home: YourHomeScreen(),
+)
+```
+
+### In Widgetbook verwenden
+
+```dart
+Widgetbook.material(
+  addons: [
+    MaterialThemeAddon(
+      themes: [
+        WidgetbookTheme(
+          name: 'Light',
+          data: AppTheme.lightTheme,
+        ),
+        WidgetbookTheme(
+          name: 'Dark',
+          data: AppTheme.darkTheme,
+        ),
+      ],
+    ),
+  ],
+  // ...
+)
+```
+
+## Farbschema
+
+### Primärfarben
+- **Primary**: Amber (#FFC107) - repräsentiert Honig
+- **Secondary**: Brown (#795548) - repräsentiert Bienenstock-Holz
+- **Tertiary**: Light Green (#8BC34A) - repräsentiert Natur
+
+### Design-Prinzipien
+- Abgerundete Ecken (12px für Cards/Buttons, 28px für Dialogs)
+- Material 3 Elevation und Schatten
+- Konsistente Abstände und Polsterungen
+- Barrierefreie Kontrastverhältnisse
+
+## Struktur
+
+```
+lib/
+  ├── ui.dart              # Haupt-Export-Datei
+  └── src/
+      └── theme/
+          └── app_theme.dart  # Theme-Konfiguration
+```
+
+## Entwicklung
+
+Um das Theme zu modifizieren, bearbeiten Sie `lib/src/theme/app_theme.dart` und passen Sie die:
+- Farbschemata (`_lightColorScheme`, `_darkColorScheme`)
+- Typografie (`_textTheme`)
+- Komponenten-Themes (in den `lightTheme`/`darkTheme` Getters)
+
+an.
 

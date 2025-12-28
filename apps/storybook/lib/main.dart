@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ui/ui.dart';
 import 'package:widgetbook/widgetbook.dart';
 
 void main() {
@@ -15,14 +16,8 @@ class HivesWidgetbook extends StatelessWidget {
       addons: [
         MaterialThemeAddon(
           themes: [
-            WidgetbookTheme(
-              name: 'Light',
-              data: ThemeData.light(useMaterial3: true),
-            ),
-            WidgetbookTheme(
-              name: 'Dark',
-              data: ThemeData.dark(useMaterial3: true),
-            ),
+            WidgetbookTheme(name: 'Light', data: AppTheme.lightTheme),
+            WidgetbookTheme(name: 'Dark', data: AppTheme.darkTheme),
           ],
         ),
         // Device Frame Addon for mobile device previews
