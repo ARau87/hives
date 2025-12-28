@@ -312,3 +312,99 @@ Follow [Effective Dart](https://dart.dev/effective-dart) guidelines for consiste
 - PREFER workspace-wide commands before package-specific commands.
 - DO keep linting, formatting, and code generation aligned across all packages.
 - AVOID duplicating Melos scripts inside individual packages unless strictly necessary.
+
+--- 
+
+## General Flutter Coding Rules
+
+### Theming (Material Design)
+#### No magic values
+- DO prefer `Theme.of(context)` values over hardcoded colors, text styles, shapes, and sizes.
+- DO prefer `ColorScheme` roles (e.g. `theme.colorScheme.primary`) instead of raw `Color(0xFF...)`.
+- DO prefer `TextTheme` (e.g. `theme.textTheme.titleMedium`) instead of hardcoded `TextStyle(...)`.
+- DO prefer Material component theming (`FilledButtonThemeData`, `InputDecorationTheme`, etc.) instead of styling every widget inline.
+- AVOID hardcoded spacing values scattered throughout UI code.
+- PREFER a centralized spacing system via **Theme Extensions** (e.g. `context.spacing.md`) or a single design-tokens package.
+
+#### Theme extensions
+- DO use `ThemeExtension` to store app-specific design tokens (spacing, radii, elevations, custom colors).
+- DO keep Theme Extensions immutable and provide `copyWith` + `lerp`.
+- DO read Theme Extensions via `Theme.of(context).extension<MyThemeX>()!`.
+- DON'T create ad-hoc global constants for UI tokens when the app is Material-themed.
+- PREFER separate theme extensions per concern (e.g. `AppSpacing`, `AppRadii`, `AppShadows`) rather than one giant extension.
+
+#### Material 3
+- DO use Material 3 (`useMaterial3: true`) for Material apps unless there is a deliberate reason not to.
+- DO keep light/dark themes consistent and derived from `ColorScheme` (and `ColorScheme.fromSeed` where applicable).
+- DON'T use deprecated `ColorScheme` fields when migrating; prefer newer color roles.
+
+---
+
+### Widget Composition & Rebuild Hygiene
+- DO keep widgets small and focused; extract subtrees into their own widgets to reduce rebuild scope.
+- PREFER `const` constructors for widgets and immutable objects where possible.
+- DO avoid doing work in `build()` that can be computed once (parsing, mapping, heavy transforms).
+- AVOID rebuilding expensive widgets when only a small part of state changes; isolate with smaller widgets or `BlocBuilder`/`Selector`-style patterns.
+- PREFER `ListView.builder` / `SliverList` for long lists instead of building all children eagerly.
+
+---
+
+### Layout & Responsiveness
+- DO design for different screen sizes using constraints (LayoutBuilder), breakpoints, and adaptive layouts.
+- AVOID fixed pixel dimensions for whole layouts; prefer flexible widgets (`Expanded`, `Flexible`, `Wrap`) and theme-driven spacing.
+- DO use `SafeArea` where appropriate.
+- DO account for text scaling and accessibility; avoid layouts that break with larger fonts.
+
+---
+
+### Keys, State, and Identity
+- DO use keys when widget identity matters (reorderable lists, animated lists, stateful items).
+- PREFER `ValueKey(stableId)` for list items backed by stable identifiers.
+- DON'T use `UniqueKey()` for list items unless you explicitly want to force state loss on rebuild.
+- AVOID overusing keys where they don’t affect correctness.
+
+---
+
+### Async, Effects, and Lifecycle
+- DO keep side effects out of `build()` (network calls, analytics, navigation, dialogs).
+- DO trigger initial loads in `initState()` (or via Cubit/Bloc creation) rather than from `build()`.
+- DO guard async callbacks with `if (!context.mounted) return;` before using `context`.
+- DO cancel subscriptions, controllers, and listeners in `dispose()`.
+
+---
+
+### Navigation & UI Side Effects
+- DO keep navigation and UI side effects (snackbars, dialogs) in the presentation layer.
+- PREFER handling one-off effects via dedicated mechanisms (e.g. `BlocListener`, event streams, or effect fields) rather than encoding them as persistent state.
+- DON'T store `BuildContext` in long-lived objects (Cubits, services, repositories).
+
+---
+
+### Performance Best Practices
+- DO profile before optimizing; use DevTools to find rebuild hotspots and jank sources.
+- PREFER caching expensive computations and using `RepaintBoundary` selectively for costly repaint areas.
+- AVOID unnecessary opacity/clip layers (`Opacity`, `ClipRRect`) on large scrolling surfaces unless needed.
+- DO use appropriate image sizing and caching; avoid decoding huge images for small UI slots.
+
+---
+
+### Accessibility & UX
+- DO provide semantics for tappable/custom controls (`Semantics`, tooltips, labels).
+- DO ensure tap targets are large enough and feedback is visible.
+- DO use Material components when possible to get accessibility and interaction defaults for free.
+- AVOID conveying meaning by color alone; ensure contrast and add text/icon cues.
+
+---
+
+### Error Handling & User Feedback
+- DO represent loading, empty, and error UI states explicitly.
+- PREFER user-friendly error messages and retry actions.
+- DON'T let exceptions crash the UI; convert them into UI state and log appropriately.
+
+---
+
+### Testing
+- DO write unit tests for pure Dart logic (formatting, mapping, validation).
+- DO write widget tests for critical UI flows and visual states.
+- PREFER golden tests for stable, design-critical widgets (when your team uses them).
+- DO keep widgets testable by injecting dependencies and avoiding hidden globals.
