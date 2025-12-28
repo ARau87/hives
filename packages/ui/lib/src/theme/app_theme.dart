@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'hives_colors.dart';
+import 'hives_spacings.dart';
 
 /// Hives App Theme Configuration
 class AppTheme {
@@ -323,7 +324,7 @@ class AppTheme {
           borderRadius: BorderRadius.vertical(top: Radius.circular(28)),
         ),
       ),
-      extensions: [HivesColors.dark],
+      extensions: [HivesColors.dark, HivesSpacings.standard],
     );
   }
 }
