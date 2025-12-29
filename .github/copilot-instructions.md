@@ -317,6 +317,14 @@ Follow [Effective Dart](https://dart.dev/effective-dart) guidelines for consiste
 
 ## General Flutter Coding Rules
 
+---
+
+### Code Generation
+#### General guidelines
+- DO use `build_runner` to generate code from templates. 
+- DO run `melos bs` to bootstrap and regenerate code.
+- NEVER change `.g.dart` or other generated files manually.
+
 ### Theming (Material Design)
 #### No magic values
 - DO prefer `Theme.of(context)` values over hardcoded colors, text styles, shapes, and sizes.
