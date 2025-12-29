@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 
 import 'button_theme.dart';
 import 'hives_colors.dart';
-import 'hives_component_theme.dart';
 import 'hives_spacings.dart';
 import 'input_theme.dart';
 import 'surface_theme.dart';
@@ -241,7 +240,6 @@ class AppTheme {
       ),
       extensions: [
         HivesColors.light,
-        HivesComponentTheme.standard(),
         HivesSpacings.standard,
         ButtonThemeTokens.standard(),
         InputThemeTokens.standard(),
@@ -337,7 +335,6 @@ class AppTheme {
       ),
       extensions: [
         HivesColors.dark,
-        HivesComponentTheme.standard(),
         HivesSpacings.standard,
         ButtonThemeTokens.standard(),
         InputThemeTokens.standard(),

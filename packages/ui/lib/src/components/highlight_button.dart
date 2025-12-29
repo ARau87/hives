@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../theme/button_theme.dart';
 import '../theme/hives_colors.dart';
-import '../theme/hives_component_theme.dart';
 import '../theme/hives_spacings.dart';
 
 /// A customizable button widget with highlight gradient and animation effects.
@@ -104,17 +104,16 @@ class _HighlightButtonState extends State<HighlightButton>
   @override
   Widget build(BuildContext context) {
     final colors = Theme.of(context).hivesColors;
-    final componentTheme = context.hivesComponentTheme;
+    final buttonTheme =
+        Theme.of(context).extension<ButtonThemeTokens>() ??
+        ButtonThemeTokens.standard();
     final spacings =
         Theme.of(context).extension<HivesSpacings>() ?? HivesSpacings.standard;
     final isDisabled = !widget.isEnabled || widget.isLoading;
-    final buttonHeight = widget.height ?? componentTheme.buttonHeight;
+    final buttonHeight = widget.height ?? buttonTheme.minHeight;
 
     // Initialize animation with theme values on first build
-    _initializeAnimation(
-      componentTheme.buttonScaleStart,
-      componentTheme.buttonScaleEnd,
-    );
+    _initializeAnimation(buttonTheme.scaleStart, buttonTheme.scaleEnd);
 
     return ScaleTransition(
       scale: _scaleAnimation,
@@ -129,10 +128,10 @@ class _HighlightButtonState extends State<HighlightButton>
                   ? LinearGradient(
                       colors: [
                         colors.honey.withValues(
-                          alpha: componentTheme.disabledOpacity,
+                          alpha: buttonTheme.disabledOpacity,
                         ),
                         colors.orange.withValues(
-                          alpha: componentTheme.disabledOpacity,
+                          alpha: buttonTheme.disabledOpacity,
                         ),
                       ],
                       begin: Alignment.centerLeft,
@@ -143,27 +142,27 @@ class _HighlightButtonState extends State<HighlightButton>
                       begin: Alignment.centerLeft,
                       end: Alignment.centerRight,
                     ),
-              borderRadius: BorderRadius.circular(componentTheme.borderRadius),
+              borderRadius: BorderRadius.circular(buttonTheme.borderRadius),
               boxShadow: isDisabled
                   ? null
                   : [
                       BoxShadow(
                         color: colors.honey.withValues(
-                          alpha: componentTheme.shadowOpacity,
+                          alpha: buttonTheme.shadowOpacity,
                         ),
-                        blurRadius: componentTheme.shadowBlurRadius,
-                        offset: componentTheme.shadowOffset,
+                        blurRadius: buttonTheme.shadowBlurRadius,
+                        offset: buttonTheme.shadowOffset,
                       ),
                     ],
             ),
             child: InkWell(
               onTap: _onPressed,
-              borderRadius: BorderRadius.circular(componentTheme.borderRadius),
+              borderRadius: BorderRadius.circular(buttonTheme.borderRadius),
               splashColor: Colors.white.withValues(
-                alpha: componentTheme.splashOpacity,
+                alpha: buttonTheme.splashOpacity,
               ),
               highlightColor: Colors.white.withValues(
-                alpha: componentTheme.highlightOpacity,
+                alpha: buttonTheme.highlightOpacity,
               ),
               child: Padding(
                 padding:
@@ -175,10 +174,10 @@ class _HighlightButtonState extends State<HighlightButton>
                 child: widget.isLoading
                     ? Center(
                         child: SizedBox(
-                          width: componentTheme.loadingIndicatorSize,
-                          height: componentTheme.loadingIndicatorSize,
+                          width: buttonTheme.loadingIndicatorSize,
+                          height: buttonTheme.loadingIndicatorSize,
                           child: CircularProgressIndicator(
-                            strokeWidth: componentTheme.loadingStrokeWidth,
+                            strokeWidth: buttonTheme.loadingStrokeWidth,
                             valueColor: AlwaysStoppedAnimation<Color>(
                               colors.honeyDark,
                             ),
@@ -195,7 +194,9 @@ class _HighlightButtonState extends State<HighlightButton>
   }
 
   Widget _buildContent(BuildContext context) {
-    final componentTheme = context.hivesComponentTheme;
+    final buttonTheme =
+        Theme.of(context).extension<ButtonThemeTokens>() ??
+        ButtonThemeTokens.standard();
     final textStyle =
         widget.textStyle ??
         Theme.of(context).textTheme.labelLarge?.copyWith(
@@ -221,7 +222,7 @@ class _HighlightButtonState extends State<HighlightButton>
         children: [
           if (widget.iconLeading) ...[
             widget.icon!,
-            SizedBox(width: componentTheme.iconTextSpacing),
+            SizedBox(width: buttonTheme.iconTextSpacing),
           ],
           Flexible(
             child: Text(
@@ -232,7 +233,7 @@ class _HighlightButtonState extends State<HighlightButton>
             ),
           ),
           if (!widget.iconLeading) ...[
-            SizedBox(width: componentTheme.iconTextSpacing),
+            SizedBox(width: buttonTheme.iconTextSpacing),
             widget.icon!,
           ],
         ],

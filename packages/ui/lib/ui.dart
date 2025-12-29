@@ -11,7 +11,6 @@ export 'src/components/surfaces/surfaces.dart';
 export 'src/theme/app_theme.dart';
 export 'src/theme/button_theme.dart';
 export 'src/theme/hives_colors.dart';
-export 'src/theme/hives_component_theme.dart';
 export 'src/theme/hives_spacings.dart';
 export 'src/theme/input_theme.dart';
 export 'src/theme/surface_theme.dart';

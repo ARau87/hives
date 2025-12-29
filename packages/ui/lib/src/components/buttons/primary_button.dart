@@ -156,7 +156,12 @@ class _PrimaryButtonState extends State<PrimaryButton>
                           ),
                         )
                       else if (widget.icon != null && widget.iconLeading)
-                        widget.icon!,
+                        IconTheme(
+                          data: IconThemeData(
+                            color: theme.colorScheme.onPrimary,
+                          ),
+                          child: widget.icon!,
+                        ),
                       if ((widget.isLoading || widget.icon != null) &&
                           !(!widget.iconLeading && widget.icon != null))
                         const SizedBox(width: 8.0),
@@ -181,7 +186,12 @@ class _PrimaryButtonState extends State<PrimaryButton>
                       if (!widget.isLoading &&
                           widget.icon != null &&
                           !widget.iconLeading)
-                        widget.icon!,
+                        IconTheme(
+                          data: IconThemeData(
+                            color: theme.colorScheme.onPrimary,
+                          ),
+                          child: widget.icon!,
+                        ),
                     ],
                   ),
                 ),

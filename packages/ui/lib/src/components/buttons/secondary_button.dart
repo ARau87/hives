@@ -150,7 +150,14 @@ class _SecondaryButtonState extends State<SecondaryButton>
                           ),
                         )
                       else if (widget.icon != null && widget.iconLeading)
-                        widget.icon!,
+                        IconTheme(
+                          data: IconThemeData(
+                            color: theme.colorScheme.primary.withValues(
+                              alpha: opacity,
+                            ),
+                          ),
+                          child: widget.icon!,
+                        ),
                       if ((widget.isLoading || widget.icon != null) &&
                           !(!widget.iconLeading && widget.icon != null))
                         const SizedBox(width: 8.0),
@@ -177,7 +184,14 @@ class _SecondaryButtonState extends State<SecondaryButton>
                       if (!widget.isLoading &&
                           widget.icon != null &&
                           !widget.iconLeading)
-                        widget.icon!,
+                        IconTheme(
+                          data: IconThemeData(
+                            color: theme.colorScheme.primary.withValues(
+                              alpha: opacity,
+                            ),
+                          ),
+                          child: widget.icon!,
+                        ),
                     ],
                   ),
                 ),
