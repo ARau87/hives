@@ -3,17 +3,9 @@ import 'package:flutter/material.dart';
 /// Primary action button with prominent color.
 ///
 /// [PrimaryButton] is used for the main call-to-action on a screen.
-/// It uses the theme's primary color and provides visual feedback
-/// on interaction with scale animation.
-///
-/// Example:
-/// ```dart
-/// PrimaryButton(
-///   label: 'Get Started',
-///   onPressed: () => Navigator.of(context).pushNamed('/home'),
-/// )
-/// ```
-class PrimaryButton extends StatefulWidget {
+/// It now wraps a Material [FilledButton] and relies on Button theming.
+/// Avoids custom gesture handling and inline styles per widget rules.
+class PrimaryButton extends StatelessWidget {
   /// The text displayed on the button.
   final String label;
 
@@ -41,11 +33,11 @@ class PrimaryButton extends StatefulWidget {
   /// Custom text style for the button label.
   final TextStyle? textStyle;
 
-  /// Padding inside the button.
+  /// Optional content padding override. Prefer theming.
   final EdgeInsets? padding;
 
   const PrimaryButton({
-    Key? key,
+    super.key,
     required this.label,
     required this.onPressed,
     this.isLoading = false,
@@ -56,160 +48,70 @@ class PrimaryButton extends StatefulWidget {
     this.height,
     this.textStyle,
     this.padding,
-  }) : super(key: key);
-
-  @override
-  State<PrimaryButton> createState() => _PrimaryButtonState();
-}
-
-class _PrimaryButtonState extends State<PrimaryButton>
-    with SingleTickerProviderStateMixin {
-  late AnimationController _animationController;
-  late Animation<double> _scaleAnimation;
-
-  @override
-  void initState() {
-    super.initState();
-    _animationController = AnimationController(
-      duration: const Duration(milliseconds: 200),
-      vsync: this,
-    );
-    _scaleAnimation = Tween<double>(begin: 1.0, end: 0.95).animate(
-      CurvedAnimation(parent: _animationController, curve: Curves.easeInOut),
-    );
-  }
-
-  @override
-  void dispose() {
-    _animationController.dispose();
-    super.dispose();
-  }
-
-  void _onTapDown(TapDownDetails details) {
-    if (widget.isEnabled && !widget.isLoading) {
-      _animationController.forward();
-    }
-  }
-
-  void _onTapUp(TapUpDetails details) {
-    _animationController.reverse();
-  }
-
-  void _onTapCancel() {
-    _animationController.reverse();
-  }
-
-  Widget _tintedIcon(Widget icon, Color color) {
-    if (icon is Icon) {
-      return Icon(
-        icon.icon,
-        size: icon.size,
-        color: color,
-        semanticLabel: icon.semanticLabel,
-        textDirection: icon.textDirection,
-        fill: icon.fill,
-        grade: icon.grade,
-        opticalSize: icon.opticalSize,
-        shadows: icon.shadows,
-      );
-    }
-    return IconTheme(
-      data: IconThemeData(color: color),
-      child: icon,
-    );
-  }
+  });
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final isDisabled = !widget.isEnabled || widget.isLoading;
-    final opacity = isDisabled ? 0.5 : 1.0;
 
-    return GestureDetector(
-      onTapDown: _onTapDown,
-      onTapUp: _onTapUp,
-      onTapCancel: _onTapCancel,
-      onTap: widget.isEnabled && !widget.isLoading ? widget.onPressed : null,
-      child: ScaleTransition(
-        scale: _scaleAnimation,
-        child: Container(
-          width: widget.width,
-          height: widget.height ?? 48.0,
-          decoration: BoxDecoration(
-            color: theme.colorScheme.primary.withValues(alpha: opacity),
-            borderRadius: BorderRadius.circular(12.0),
-            boxShadow: [
-              BoxShadow(
-                color: theme.colorScheme.primary.withValues(
-                  alpha: 0.3 * opacity,
-                ),
-                blurRadius: 8.0,
-                offset: const Offset(0, 4),
-              ),
-            ],
-          ),
-          child: Material(
-            color: Colors.transparent,
-            child: InkWell(
-              onTap: null, // Handled by GestureDetector
-              child: Padding(
-                padding:
-                    widget.padding ??
-                    const EdgeInsets.symmetric(
-                      horizontal: 24.0,
-                      vertical: 12.0,
-                    ),
-                child: Center(
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      if (widget.isLoading)
-                        SizedBox(
-                          width: 20.0,
-                          height: 20.0,
-                          child: CircularProgressIndicator(
-                            strokeWidth: 2.0,
-                            valueColor: AlwaysStoppedAnimation<Color>(
-                              theme.colorScheme.onPrimary,
-                            ),
-                          ),
-                        )
-                      else if (widget.icon != null && widget.iconLeading)
-                        _tintedIcon(widget.icon!, theme.colorScheme.onPrimary),
-                      if ((widget.isLoading || widget.icon != null) &&
-                          !(!widget.iconLeading && widget.icon != null))
-                        const SizedBox(width: 8.0),
-                      if (!widget.isLoading)
-                        Flexible(
-                          child: Text(
-                            widget.label,
-                            style:
-                                (widget.textStyle ?? theme.textTheme.labelLarge)
-                                    ?.copyWith(
-                                      color: theme.colorScheme.onPrimary,
-                                      fontWeight: FontWeight.w600,
-                                    ),
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        ),
-                      if (!widget.isLoading &&
-                          widget.icon != null &&
-                          !widget.iconLeading)
-                        const SizedBox(width: 8.0),
-                      if (!widget.isLoading &&
-                          widget.icon != null &&
-                          !widget.iconLeading)
-                        _tintedIcon(widget.icon!, theme.colorScheme.onPrimary),
-                    ],
-                  ),
-                ),
+    final child = _buildChild(theme);
+
+    final button = FilledButton(
+      onPressed: isEnabled && !isLoading ? onPressed : null,
+      style: padding != null
+          ? ButtonStyle(padding: WidgetStateProperty.all<EdgeInsets>(padding!))
+          : null,
+      child: child,
+    );
+
+    if (width != null || height != null) {
+      return SizedBox(width: width, height: height, child: button);
+    }
+    return button;
+  }
+
+  Widget _buildChild(ThemeData theme) {
+    final iconWidget = icon;
+    final effectiveText = Text(
+      label,
+      maxLines: 1,
+      overflow: TextOverflow.ellipsis,
+      style: textStyle, // prefer theme if null
+    );
+
+    if (isLoading) {
+      return Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          SizedBox(
+            width: 20.0,
+            height: 20.0,
+            child: CircularProgressIndicator(
+              strokeWidth: 2.0,
+              valueColor: AlwaysStoppedAnimation<Color>(
+                theme.colorScheme.onPrimary,
               ),
             ),
           ),
-        ),
-      ),
-    );
+          const SizedBox(width: 8.0),
+          // Keep layout height stable by reserving space for text.
+          Flexible(child: effectiveText),
+        ],
+      );
+    }
+
+    if (iconWidget == null) {
+      return effectiveText;
+    }
+
+    final children = <Widget>[
+      if (iconLeading) iconWidget,
+      if (iconLeading) const SizedBox(width: 8.0),
+      Flexible(child: effectiveText),
+      if (!iconLeading) const SizedBox(width: 8.0),
+      if (!iconLeading) iconWidget,
+    ];
+
+    return Row(mainAxisSize: MainAxisSize.min, children: children);
   }
 }

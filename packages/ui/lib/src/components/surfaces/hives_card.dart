@@ -4,19 +4,8 @@ import '../../theme/surface_theme.dart';
 
 /// A Material Design card component with customizable elevation and styling.
 ///
-/// [HivesCard] displays content in a contained, elevated surface following
-/// the Hives theme design tokens. It supports custom padding, border radius,
-/// and elevation levels.
-///
-/// Example:
-/// ```dart
-/// HivesCard(
-///   child: Padding(
-///     padding: EdgeInsets.all(16),
-///     child: Text('Card content'),
-///   ),
-/// )
-/// ```
+/// [HivesCard] uses [Card] and relies on [CardTheme] for visuals; only
+/// provides minimal overrides and optional click handling.
 class HivesCard extends StatelessWidget {
   /// The content widget displayed inside the card.
   final Widget child;
@@ -40,7 +29,7 @@ class HivesCard extends StatelessWidget {
   final bool isClickable;
 
   const HivesCard({
-    Key? key,
+    super.key,
     required this.child,
     this.padding,
     this.borderRadius,
@@ -48,40 +37,29 @@ class HivesCard extends StatelessWidget {
     this.backgroundColor,
     this.onTap,
     this.isClickable = false,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final surfaceTokens = theme.extension<SurfaceThemeTokens>();
 
-    final finalBorderRadius =
+    final resolvedRadius =
         borderRadius ??
         BorderRadius.circular(surfaceTokens?.cardBorderRadius ?? 12.0);
-    final finalPadding =
+    final resolvedPadding =
         padding ?? EdgeInsets.all(surfaceTokens?.cardPadding ?? 16.0);
-    final finalElevation = elevation ?? surfaceTokens?.cardElevation ?? 2.0;
-    final finalBackgroundColor = backgroundColor ?? theme.colorScheme.surface;
 
     final card = Card(
-      elevation: finalElevation,
-      shape: RoundedRectangleBorder(borderRadius: finalBorderRadius),
-      color: finalBackgroundColor,
-      child: Padding(padding: finalPadding, child: child),
+      elevation: elevation ?? surfaceTokens?.cardElevation,
+      color: backgroundColor,
+      shape: RoundedRectangleBorder(borderRadius: resolvedRadius),
+      clipBehavior: Clip.antiAlias,
+      child: Padding(padding: resolvedPadding, child: child),
     );
 
     if (isClickable && onTap != null) {
-      return GestureDetector(
-        onTap: onTap,
-        child: Material(
-          color: Colors.transparent,
-          child: InkWell(
-            onTap: onTap,
-            borderRadius: finalBorderRadius,
-            child: card,
-          ),
-        ),
-      );
+      return InkWell(onTap: onTap, borderRadius: resolvedRadius, child: card);
     }
 
     return card;

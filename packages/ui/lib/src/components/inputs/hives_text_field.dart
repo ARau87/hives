@@ -4,17 +4,8 @@ import '../../theme/input_theme.dart';
 
 /// A customized text input field following Hives design system.
 ///
-/// [HivesTextField] provides a Material Design text input field with
-/// theme-based styling, validation, and customizable behavior.
-///
-/// Example:
-/// ```dart
-/// HivesTextField(
-///   label: 'Email',
-///   hint: 'Enter your email',
-///   onChanged: (value) => email = value,
-/// )
-/// ```
+/// [HivesTextField] leverages the app's [InputDecorationTheme] instead of
+/// restyling borders and paddings inline. Only functional props are set here.
 class HivesTextField extends StatefulWidget {
   /// The label text displayed above the input field.
   final String? label;
@@ -61,11 +52,11 @@ class HivesTextField extends StatefulWidget {
   /// Text editing controller.
   final TextEditingController? controller;
 
-  /// Custom input decoration.
+  /// Custom input decoration. Prefer theme.
   final InputDecoration? decoration;
 
   const HivesTextField({
-    Key? key,
+    super.key,
     this.label,
     this.hint,
     this.onChanged,
@@ -82,7 +73,7 @@ class HivesTextField extends StatefulWidget {
     this.textInputAction = TextInputAction.done,
     this.controller,
     this.decoration,
-  }) : super(key: key);
+  });
 
   @override
   State<HivesTextField> createState() => _HivesTextFieldState();
@@ -114,129 +105,63 @@ class _HivesTextFieldState extends State<HivesTextField> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final inputTokens = theme.extension<InputThemeTokens>();
-    final hasError = widget.errorText?.isNotEmpty ?? false;
+
+    final field = TextField(
+      controller: _controller,
+      focusNode: _focusNode,
+      enabled: widget.isEnabled,
+      maxLines: widget.isPassword ? 1 : widget.maxLines,
+      maxLength: widget.maxLength,
+      keyboardType: widget.keyboardType,
+      textInputAction: widget.textInputAction,
+      obscureText: widget.isPassword && !_isPasswordVisible,
+      onChanged: widget.onChanged,
+      onSubmitted: (_) => widget.onSubmitted?.call(),
+      style: theme.textTheme.bodyMedium,
+      decoration: _buildDecoration(theme, inputTokens),
+    );
+
+    if (widget.label == null) return field;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        if (widget.label != null)
-          Padding(
-            padding: const EdgeInsets.only(bottom: 8.0),
-            child: Text(
-              widget.label!,
-              style: theme.textTheme.titleSmall?.copyWith(
-                color: hasError
-                    ? theme.colorScheme.error
-                    : theme.colorScheme.onSurface,
-              ),
-            ),
-          ),
-        TextField(
-          controller: _controller,
-          focusNode: _focusNode,
-          enabled: widget.isEnabled,
-          maxLines: widget.isPassword ? 1 : widget.maxLines,
-          maxLength: widget.maxLength,
-          keyboardType: widget.keyboardType,
-          textInputAction: widget.textInputAction,
-          obscureText: widget.isPassword && !_isPasswordVisible,
-          onChanged: widget.onChanged,
-          onSubmitted: (_) => widget.onSubmitted?.call(),
-          style: theme.textTheme.bodyMedium?.copyWith(
-            fontSize: inputTokens?.hintFontSize ?? 16.0,
-          ),
-          decoration:
-              widget.decoration ??
-              InputDecoration(
-                hintText: widget.hint,
-                hintStyle: theme.textTheme.bodyMedium?.copyWith(
-                  fontSize: inputTokens?.hintFontSize ?? 16.0,
-                ),
-                prefixIcon: widget.prefixIcon,
-                suffixIcon: widget.isPassword
-                    ? GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            _isPasswordVisible = !_isPasswordVisible;
-                          });
-                        },
-                        child: Icon(
-                          _isPasswordVisible
-                              ? Icons.visibility
-                              : Icons.visibility_off,
-                        ),
-                      )
-                    : widget.suffixIcon,
-                errorText: widget.errorText,
-                filled: true,
-                fillColor: widget.isEnabled
-                    ? Colors.transparent
-                    : Colors.grey.withValues(alpha: 0.1),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(
-                    inputTokens?.borderRadius ?? 8.0,
-                  ),
-                  borderSide: BorderSide(
-                    color: theme.colorScheme.primary,
-                    width: inputTokens?.borderWidth ?? 1.0,
-                  ),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(
-                    inputTokens?.borderRadius ?? 8.0,
-                  ),
-                  borderSide: BorderSide(
-                    color: hasError
-                        ? theme.colorScheme.error
-                        : theme.colorScheme.primary,
-                    width: inputTokens?.focusedBorderWidth ?? 2.0,
-                  ),
-                ),
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(
-                    inputTokens?.borderRadius ?? 8.0,
-                  ),
-                  borderSide: BorderSide(
-                    color: hasError
-                        ? theme.colorScheme.error
-                        : theme.colorScheme.primary,
-                    width: inputTokens?.borderWidth ?? 1.0,
-                  ),
-                ),
-                errorBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(
-                    inputTokens?.borderRadius ?? 8.0,
-                  ),
-                  borderSide: BorderSide(
-                    color: theme.colorScheme.error,
-                    width: inputTokens?.borderWidth ?? 1.0,
-                  ),
-                ),
-                focusedErrorBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(
-                    inputTokens?.borderRadius ?? 8.0,
-                  ),
-                  borderSide: BorderSide(
-                    color: theme.colorScheme.error,
-                    width: inputTokens?.focusedBorderWidth ?? 2.0,
-                  ),
-                ),
-                disabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(
-                    inputTokens?.borderRadius ?? 8.0,
-                  ),
-                  borderSide: BorderSide(
-                    color: Colors.grey,
-                    width: inputTokens?.borderWidth ?? 1.0,
-                  ),
-                ),
-                contentPadding: EdgeInsets.symmetric(
-                  horizontal: inputTokens?.paddingHorizontal ?? 16.0,
-                  vertical: inputTokens?.paddingVertical ?? 12.0,
-                ),
-              ),
+        Padding(
+          padding: const EdgeInsets.only(bottom: 8.0),
+          child: Text(widget.label!, style: theme.textTheme.titleSmall),
         ),
+        field,
       ],
+    );
+  }
+
+  InputDecoration _buildDecoration(
+    ThemeData theme,
+    InputThemeTokens? inputTokens,
+  ) {
+    final suffix = widget.isPassword
+        ? IconButton(
+            onPressed: () =>
+                setState(() => _isPasswordVisible = !_isPasswordVisible),
+            icon: Icon(
+              _isPasswordVisible ? Icons.visibility : Icons.visibility_off,
+            ),
+          )
+        : widget.suffixIcon;
+
+    // Rely on InputDecorationTheme. Only set functional fields and error/hint.
+    return (widget.decoration ?? const InputDecoration()).copyWith(
+      hintText: widget.hint,
+      prefixIcon: widget.prefixIcon,
+      suffixIcon: suffix,
+      errorText: widget.errorText,
+      // Ensure min height via contentPadding override only if provided by tokens.
+      contentPadding: inputTokens == null
+          ? null
+          : EdgeInsets.symmetric(
+              horizontal: inputTokens.paddingHorizontal,
+              vertical: inputTokens.paddingVertical,
+            ),
     );
   }
 }

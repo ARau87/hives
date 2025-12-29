@@ -2,17 +2,8 @@ import 'package:flutter/material.dart';
 
 /// A compact, interactive chip component for tags, filters, or selections.
 ///
-/// [HivesChip] displays a small, self-contained widget that can represent
-/// tags, filter options, or selections with optional leading/trailing icons.
-///
-/// Example:
-/// ```dart
-/// HivesChip(
-///   label: 'Flutter',
-///   onPressed: () {},
-///   icon: Icon(Icons.check),
-/// )
-/// ```
+/// [HivesChip] now uses Material [ChoiceChip] when [isSelected] is provided,
+/// otherwise an [ActionChip]. Visuals are driven by [ChipTheme].
 class HivesChip extends StatelessWidget {
   /// The text label of the chip.
   final String label;
@@ -29,23 +20,23 @@ class HivesChip extends StatelessWidget {
   /// Whether the chip is enabled for interaction.
   final bool isEnabled;
 
-  /// Custom background color.
+  /// Custom background color. Prefer theme.
   final Color? backgroundColor;
 
-  /// Custom text color.
+  /// Custom text color. Prefer theme.
   final Color? textColor;
 
-  /// Custom border color.
+  /// Custom border color. Prefer theme.
   final Color? borderColor;
 
-  /// Padding inside the chip.
+  /// Padding inside the chip. Prefer theme.
   final EdgeInsets? padding;
 
-  /// Border radius of the chip.
+  /// Border radius of the chip. Prefer theme.
   final double? borderRadius;
 
   const HivesChip({
-    Key? key,
+    super.key,
     required this.label,
     this.onPressed,
     this.icon,
@@ -56,65 +47,59 @@ class HivesChip extends StatelessWidget {
     this.borderColor,
     this.padding,
     this.borderRadius,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final finalBorderRadius = borderRadius ?? 16.0;
-    final finalPadding =
-        padding ?? const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0);
+    final effectiveLabel = Text(
+      label,
+      style: theme.textTheme.labelMedium?.copyWith(color: textColor),
+    );
+    final shape = borderRadius == null && borderColor == null
+        ? null
+        : RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(borderRadius ?? 8.0),
+            side: borderColor == null
+                ? BorderSide.none
+                : BorderSide(color: borderColor!),
+          );
 
-    final chipBackgroundColor =
-        backgroundColor ??
-        (isSelected
-            ? theme.colorScheme.primary
-            : theme.colorScheme.secondaryContainer);
+    // Non-interactive visual chip
+    if (onPressed == null) {
+      return ChoiceChip(
+        label: effectiveLabel,
+        selected: isSelected,
+        onSelected: null,
+        avatar: icon,
+        visualDensity: VisualDensity.compact,
+        backgroundColor: backgroundColor,
+        shape: shape,
+        labelPadding: padding,
+      );
+    }
 
-    final chipTextColor =
-        textColor ??
-        (isSelected
-            ? theme.colorScheme.onPrimary
-            : theme.colorScheme.onSecondaryContainer);
+    if (isSelected) {
+      return ChoiceChip(
+        label: effectiveLabel,
+        selected: isSelected,
+        onSelected: isEnabled ? (_) => onPressed!.call() : null,
+        avatar: icon,
+        visualDensity: VisualDensity.compact,
+        backgroundColor: backgroundColor,
+        shape: shape,
+        labelPadding: padding,
+      );
+    }
 
-    final chipBorderColor =
-        borderColor ??
-        (isSelected ? theme.colorScheme.primary : theme.colorScheme.outline);
-
-    return Material(
-      color: Colors.transparent,
-      child: InkWell(
-        onTap: isEnabled ? onPressed : null,
-        borderRadius: BorderRadius.circular(finalBorderRadius),
-        child: Container(
-          decoration: BoxDecoration(
-            color: isEnabled
-                ? chipBackgroundColor
-                : chipBackgroundColor.withValues(alpha: 0.5),
-            border: Border.all(
-              color: chipBorderColor.withValues(alpha: isEnabled ? 1.0 : 0.5),
-              width: 1.0,
-            ),
-            borderRadius: BorderRadius.circular(finalBorderRadius),
-          ),
-          padding: finalPadding,
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              if (icon != null) ...[icon!, const SizedBox(width: 6.0)],
-              Text(
-                label,
-                style: theme.textTheme.labelMedium?.copyWith(
-                  color: isEnabled
-                      ? chipTextColor
-                      : chipTextColor.withValues(alpha: 0.5),
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
+    return ActionChip(
+      label: effectiveLabel,
+      avatar: icon,
+      onPressed: isEnabled ? onPressed : null,
+      visualDensity: VisualDensity.compact,
+      backgroundColor: backgroundColor,
+      shape: shape,
+      labelPadding: padding,
     );
   }
 }
