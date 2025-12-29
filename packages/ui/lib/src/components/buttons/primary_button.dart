@@ -53,65 +53,24 @@ class PrimaryButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-
-    final child = _buildChild(theme);
-
-    final button = FilledButton(
+    final button = FilledButton.icon(
       onPressed: isEnabled && !isLoading ? onPressed : null,
-      style: padding != null
-          ? ButtonStyle(padding: WidgetStateProperty.all<EdgeInsets>(padding!))
-          : null,
-      child: child,
+      style: ButtonStyle(
+        padding: padding != null
+            ? WidgetStateProperty.all<EdgeInsets>(padding!)
+            : null,
+        iconAlignment: iconLeading ? IconAlignment.start : IconAlignment.end,
+      ),
+      icon: icon ?? const SizedBox.shrink(),
+      label: Text(
+        label,
+        style: TextStyle(color: theme.colorScheme.onPrimary).merge(textStyle),
+      ),
     );
 
     if (width != null || height != null) {
       return SizedBox(width: width, height: height, child: button);
     }
     return button;
-  }
-
-  Widget _buildChild(ThemeData theme) {
-    final iconWidget = icon;
-    final effectiveText = Text(
-      label,
-      maxLines: 1,
-      overflow: TextOverflow.ellipsis,
-      style: textStyle, // prefer theme if null
-    );
-
-    if (isLoading) {
-      return Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          SizedBox(
-            width: 20.0,
-            height: 20.0,
-            child: CircularProgressIndicator(
-              strokeWidth: 2.0,
-              valueColor: AlwaysStoppedAnimation<Color>(
-                theme.colorScheme.onPrimary,
-              ),
-            ),
-          ),
-          const SizedBox(width: 8.0),
-          // Keep layout height stable by reserving space for text.
-          Flexible(child: effectiveText),
-        ],
-      );
-    }
-
-    if (iconWidget == null) {
-      return effectiveText;
-    }
-
-    final children = <Widget>[
-      if (iconLeading) iconWidget,
-      if (iconLeading) const SizedBox(width: 8.0),
-      Flexible(child: effectiveText),
-      if (!iconLeading) const SizedBox(width: 8.0),
-      if (!iconLeading) iconWidget,
-    ];
-
-    return Row(mainAxisSize: MainAxisSize.min, children: children);
   }
 }

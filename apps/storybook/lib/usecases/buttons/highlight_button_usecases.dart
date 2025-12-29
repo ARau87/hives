@@ -61,7 +61,7 @@ Widget highlightButtonWithIconLeading(BuildContext context) {
       child: HighlightButton(
         label: context.knobs.string(label: 'Label', initialValue: 'Continue'),
         onPressed: () {},
-        icon: const Icon(Icons.arrow_forward, color: Colors.white, size: 20),
+        icon: const Icon(Icons.arrow_forward, size: 20),
         iconLeading: true,
       ),
     ),
@@ -79,7 +79,7 @@ Widget highlightButtonWithIconTrailing(BuildContext context) {
           initialValue: 'Get Started',
         ),
         onPressed: () {},
-        icon: const Icon(Icons.arrow_forward, color: Colors.white, size: 20),
+        icon: const Icon(Icons.arrow_forward, size: 20),
         iconLeading: false,
       ),
     ),

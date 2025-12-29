@@ -74,7 +74,7 @@ class HighlightButton extends StatelessWidget {
       ],
     );
 
-    final button = FilledButton(
+    final button = FilledButton.icon(
       onPressed: isEnabled && !isLoading ? onPressed : null,
       style:
           FilledButton.styleFrom(
@@ -82,6 +82,10 @@ class HighlightButton extends StatelessWidget {
             shadowColor: Colors.transparent,
             shape: RoundedRectangleBorder(borderRadius: radius),
             padding: padding,
+            iconAlignment: iconLeading
+                ? IconAlignment.start
+                : IconAlignment.end,
+            iconColor: theme.colorScheme.onPrimary,
             minimumSize: Size(width ?? 64, height ?? tokens.minHeight),
           ).merge(
             ButtonStyle(
@@ -99,7 +103,11 @@ class HighlightButton extends StatelessWidget {
               }),
             ),
           ),
-      child: _buildChild(theme, tokens),
+      icon: icon ?? const SizedBox.shrink(),
+      label: Text(
+        label,
+        style: TextStyle(color: theme.colorScheme.onPrimary).merge(textStyle),
+      ),
     );
 
     final decorated = DecoratedBox(
@@ -112,53 +120,5 @@ class HighlightButton extends StatelessWidget {
     }
 
     return decorated;
-  }
-
-  Widget _buildChild(ThemeData theme, ButtonThemeTokens tokens) {
-    final labelText = Text(
-      label,
-      maxLines: 1,
-      overflow: TextOverflow.ellipsis,
-      textAlign: TextAlign.center,
-      style:
-          textStyle ??
-          theme.textTheme.labelLarge?.copyWith(
-            color: theme.colorScheme.onPrimary,
-            fontWeight: FontWeight.w600,
-          ),
-    );
-
-    if (isLoading) {
-      return Row(
-        mainAxisSize: MainAxisSize.min,
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          SizedBox(
-            width: tokens.loadingIndicatorSize,
-            height: tokens.loadingIndicatorSize,
-            child: CircularProgressIndicator(
-              strokeWidth: tokens.loadingStrokeWidth,
-              valueColor: AlwaysStoppedAnimation<Color>(
-                theme.colorScheme.onPrimary,
-              ),
-            ),
-          ),
-          SizedBox(width: tokens.iconTextSpacing),
-          Flexible(child: labelText),
-        ],
-      );
-    }
-
-    if (icon == null) return labelText;
-
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        if (iconLeading) ...[icon!, SizedBox(width: tokens.iconTextSpacing)],
-        Flexible(child: labelText),
-        if (!iconLeading) ...[SizedBox(width: tokens.iconTextSpacing), icon!],
-      ],
-    );
   }
 }

@@ -117,7 +117,10 @@ class _HivesTextFieldState extends State<HivesTextField> {
       obscureText: widget.isPassword && !_isPasswordVisible,
       onChanged: widget.onChanged,
       onSubmitted: (_) => widget.onSubmitted?.call(),
-      style: theme.textTheme.bodyMedium,
+      style: theme.textTheme.bodyLarge?.copyWith(
+        fontWeight: FontWeight.w700,
+        fontSize: (theme.textTheme.bodyLarge?.fontSize ?? 16) + 2,
+      ),
       decoration: _buildDecoration(theme, inputTokens),
     );
 
@@ -149,13 +152,17 @@ class _HivesTextFieldState extends State<HivesTextField> {
           )
         : widget.suffixIcon;
 
-    // Rely on InputDecorationTheme. Only set functional fields and error/hint.
-    return (widget.decoration ?? const InputDecoration()).copyWith(
+    final base = (widget.decoration ?? const InputDecoration()).copyWith(
       hintText: widget.hint,
       prefixIcon: widget.prefixIcon,
       suffixIcon: suffix,
       errorText: widget.errorText,
-      // Ensure min height via contentPadding override only if provided by tokens.
+      hintStyle: theme.textTheme.bodyLarge?.copyWith(
+        fontWeight: FontWeight.w700,
+        fontSize: (theme.textTheme.bodyLarge?.fontSize ?? 16) + 2,
+      ),
+      filled: false,
+      fillColor: Colors.transparent,
       contentPadding: inputTokens == null
           ? null
           : EdgeInsets.symmetric(
@@ -163,5 +170,13 @@ class _HivesTextFieldState extends State<HivesTextField> {
               vertical: inputTokens.paddingVertical,
             ),
     );
+
+    if (!widget.isEnabled) {
+      return base.copyWith(
+        filled: true,
+        fillColor: Colors.grey.withValues(alpha: 0.1),
+      );
+    }
+    return base;
   }
 }

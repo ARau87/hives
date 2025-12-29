@@ -117,8 +117,8 @@ class AppTheme {
       letterSpacing: 0.15,
     ),
     titleSmall: TextStyle(
-      fontSize: 14,
-      fontWeight: FontWeight.w500,
+      fontSize: 13,
+      fontWeight: FontWeight.w400,
       letterSpacing: 0.1,
     ),
     bodyLarge: TextStyle(
@@ -192,8 +192,9 @@ class AppTheme {
         style: OutlinedButton.styleFrom(
           minimumSize: const Size(64, 48),
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(14),
           ),
+          side: const BorderSide(width: 2),
         ),
       ),
       textButtonTheme: TextButtonThemeData(
@@ -205,31 +206,31 @@ class AppTheme {
         ),
       ),
       inputDecorationTheme: InputDecorationTheme(
-        filled: true,
-        fillColor: _lightColorScheme.surfaceContainerHighest,
+        filled: false,
+        fillColor: Colors.transparent,
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
-          borderSide: BorderSide.none,
+          borderSide: BorderSide(color: _lightColorScheme.primary, width: 1.5),
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
-          borderSide: BorderSide.none,
+          borderSide: BorderSide(color: _lightColorScheme.primary, width: 1.5),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
-          borderSide: BorderSide(color: _lightColorScheme.primary, width: 2),
+          borderSide: BorderSide(color: _lightColorScheme.primary, width: 2.5),
         ),
         errorBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
-          borderSide: BorderSide(color: _lightColorScheme.error, width: 1),
+          borderSide: BorderSide(color: _lightColorScheme.error, width: 1.5),
         ),
         focusedErrorBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
-          borderSide: BorderSide(color: _lightColorScheme.error, width: 2),
+          borderSide: BorderSide(color: _lightColorScheme.error, width: 2.5),
         ),
         contentPadding: const EdgeInsets.symmetric(
-          horizontal: 16,
-          vertical: 16,
+          horizontal: 18,
+          vertical: 18,
         ),
       ),
       floatingActionButtonTheme: FloatingActionButtonThemeData(
@@ -295,8 +296,9 @@ class AppTheme {
         style: OutlinedButton.styleFrom(
           minimumSize: const Size(64, 48),
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(14),
           ),
+          side: const BorderSide(width: 2),
         ),
       ),
       textButtonTheme: TextButtonThemeData(
@@ -308,31 +310,31 @@ class AppTheme {
         ),
       ),
       inputDecorationTheme: InputDecorationTheme(
-        filled: true,
-        fillColor: _darkColorScheme.surfaceContainerHighest,
+        filled: false,
+        fillColor: Colors.transparent,
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
-          borderSide: BorderSide.none,
+          borderSide: BorderSide(color: _darkColorScheme.primary, width: 1.5),
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
-          borderSide: BorderSide.none,
+          borderSide: BorderSide(color: _darkColorScheme.primary, width: 1.5),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
-          borderSide: BorderSide(color: _darkColorScheme.primary, width: 2),
+          borderSide: BorderSide(color: _darkColorScheme.primary, width: 2.5),
         ),
         errorBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
-          borderSide: BorderSide(color: _darkColorScheme.error, width: 1),
+          borderSide: BorderSide(color: _darkColorScheme.error, width: 1.5),
         ),
         focusedErrorBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
-          borderSide: BorderSide(color: _darkColorScheme.error, width: 2),
+          borderSide: BorderSide(color: _darkColorScheme.error, width: 2.5),
         ),
         contentPadding: const EdgeInsets.symmetric(
-          horizontal: 16,
-          vertical: 16,
+          horizontal: 18,
+          vertical: 18,
         ),
       ),
       floatingActionButtonTheme: FloatingActionButtonThemeData(
