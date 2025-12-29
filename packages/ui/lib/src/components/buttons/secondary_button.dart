@@ -56,7 +56,12 @@ class SecondaryButton extends StatelessWidget {
 
     final baseStyle = OutlinedButton.styleFrom(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
-      side: BorderSide(color: theme.colorScheme.primary, width: 2),
+      side: BorderSide(
+        color: isEnabled
+            ? theme.colorScheme.primary
+            : theme.colorScheme.outlineVariant,
+        width: 2,
+      ),
       minimumSize: const Size(64, 48),
     );
 
@@ -69,7 +74,14 @@ class SecondaryButton extends StatelessWidget {
         iconAlignment: iconLeading ? IconAlignment.start : IconAlignment.end,
       ).merge(baseStyle),
       icon: icon,
-      label: Text(label, style: textStyle),
+      label: Text(
+        label,
+        style: TextStyle(
+          color: isEnabled
+              ? theme.colorScheme.primary
+              : theme.colorScheme.outlineVariant,
+        ).merge(textStyle),
+      ),
     );
 
     if (width != null || height != null) {
