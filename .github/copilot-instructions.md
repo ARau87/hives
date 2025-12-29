@@ -319,6 +319,12 @@ Follow [Effective Dart](https://dart.dev/effective-dart) guidelines for consiste
 
 ---
 
+### Widgets
+#### General guidelines
+- DO use the widgets of the material library whenever possible. 
+- NEVER reimplement widgets from scratch unless there is a great reason. Try to adjust existing widgets instead.
+- DO prefer adjustments of the theme instead of adjusting styles in the widget definition.
+
 ### Code Generation
 #### General guidelines
 - DO use `build_runner` to generate code from templates. 
