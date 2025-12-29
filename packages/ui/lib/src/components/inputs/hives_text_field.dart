@@ -142,10 +142,16 @@ class _HivesTextFieldState extends State<HivesTextField> {
           obscureText: widget.isPassword && !_isPasswordVisible,
           onChanged: widget.onChanged,
           onSubmitted: (_) => widget.onSubmitted?.call(),
+          style: theme.textTheme.bodyMedium?.copyWith(
+            fontSize: inputTokens?.hintFontSize ?? 16.0,
+          ),
           decoration:
               widget.decoration ??
               InputDecoration(
                 hintText: widget.hint,
+                hintStyle: theme.textTheme.bodyMedium?.copyWith(
+                  fontSize: inputTokens?.hintFontSize ?? 16.0,
+                ),
                 prefixIcon: widget.prefixIcon,
                 suffixIcon: widget.isPassword
                     ? GestureDetector(
@@ -162,14 +168,16 @@ class _HivesTextFieldState extends State<HivesTextField> {
                       )
                     : widget.suffixIcon,
                 errorText: widget.errorText,
+                filled: true,
+                fillColor: widget.isEnabled
+                    ? Colors.transparent
+                    : Colors.grey.withValues(alpha: 0.1),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(
                     inputTokens?.borderRadius ?? 8.0,
                   ),
                   borderSide: BorderSide(
-                    color: hasError
-                        ? theme.colorScheme.error
-                        : theme.colorScheme.outline,
+                    color: theme.colorScheme.primary,
                     width: inputTokens?.borderWidth ?? 1.0,
                   ),
                 ),
@@ -184,12 +192,49 @@ class _HivesTextFieldState extends State<HivesTextField> {
                     width: inputTokens?.focusedBorderWidth ?? 2.0,
                   ),
                 ),
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(
+                    inputTokens?.borderRadius ?? 8.0,
+                  ),
+                  borderSide: BorderSide(
+                    color: hasError
+                        ? theme.colorScheme.error
+                        : theme.colorScheme.primary,
+                    width: inputTokens?.borderWidth ?? 1.0,
+                  ),
+                ),
+                errorBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(
+                    inputTokens?.borderRadius ?? 8.0,
+                  ),
+                  borderSide: BorderSide(
+                    color: theme.colorScheme.error,
+                    width: inputTokens?.borderWidth ?? 1.0,
+                  ),
+                ),
+                focusedErrorBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(
+                    inputTokens?.borderRadius ?? 8.0,
+                  ),
+                  borderSide: BorderSide(
+                    color: theme.colorScheme.error,
+                    width: inputTokens?.focusedBorderWidth ?? 2.0,
+                  ),
+                ),
+                disabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(
+                    inputTokens?.borderRadius ?? 8.0,
+                  ),
+                  borderSide: BorderSide(
+                    color: Colors.grey,
+                    width: inputTokens?.borderWidth ?? 1.0,
+                  ),
+                ),
                 contentPadding: EdgeInsets.symmetric(
                   horizontal: inputTokens?.paddingHorizontal ?? 16.0,
                   vertical: inputTokens?.paddingVertical ?? 12.0,
                 ),
               ),
-          style: theme.textTheme.bodyMedium,
         ),
       ],
     );

@@ -31,6 +31,9 @@ class InputThemeTokens extends ThemeExtension<InputThemeTokens> {
   /// Duration of focus/blur animations.
   final Duration animationDuration;
 
+  /// Font size for hint text.
+  final double hintFontSize;
+
   const InputThemeTokens({
     required this.paddingHorizontal,
     required this.paddingVertical,
@@ -40,6 +43,7 @@ class InputThemeTokens extends ThemeExtension<InputThemeTokens> {
     required this.minHeight,
     required this.disabledOpacity,
     required this.animationDuration,
+    required this.hintFontSize,
   });
 
   /// Creates standard input theme tokens.
@@ -48,11 +52,12 @@ class InputThemeTokens extends ThemeExtension<InputThemeTokens> {
       paddingHorizontal: 16.0,
       paddingVertical: 12.0,
       borderRadius: 8.0,
-      borderWidth: 1.0,
-      focusedBorderWidth: 2.0,
+      borderWidth: 1.5,
+      focusedBorderWidth: 2.5,
       minHeight: 48.0,
       disabledOpacity: 0.5,
       animationDuration: Duration(milliseconds: 200),
+      hintFontSize: 16.0,
     );
   }
 
@@ -66,6 +71,7 @@ class InputThemeTokens extends ThemeExtension<InputThemeTokens> {
     double? minHeight,
     double? disabledOpacity,
     Duration? animationDuration,
+    double? hintFontSize,
   }) {
     return InputThemeTokens(
       paddingHorizontal: paddingHorizontal ?? this.paddingHorizontal,
@@ -76,6 +82,7 @@ class InputThemeTokens extends ThemeExtension<InputThemeTokens> {
       minHeight: minHeight ?? this.minHeight,
       disabledOpacity: disabledOpacity ?? this.disabledOpacity,
       animationDuration: animationDuration ?? this.animationDuration,
+      hintFontSize: hintFontSize ?? this.hintFontSize,
     );
   }
 
@@ -101,6 +108,8 @@ class InputThemeTokens extends ThemeExtension<InputThemeTokens> {
       disabledOpacity:
           lerpDouble(disabledOpacity, other.disabledOpacity, t) ??
           disabledOpacity,
+      hintFontSize:
+          lerpDouble(hintFontSize, other.hintFontSize, t) ?? hintFontSize,
       animationDuration: animationDuration,
     );
   }
