@@ -4,7 +4,7 @@ library ui;
 export 'src/components/buttons/buttons.dart';
 export 'src/components/feedback/feedback.dart';
 // Legacy components
-export 'src/components/highlight_button.dart';
+// HighlightButton is now part of the buttons library exports
 export 'src/components/inputs/inputs.dart';
 export 'src/components/surfaces/surfaces.dart';
 // Themes

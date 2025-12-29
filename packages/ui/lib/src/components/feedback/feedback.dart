@@ -1,7 +1,6 @@
-/// Feedback and display component library.
+/// Feedback component library.
 ///
-/// Provides feedback components like chips for user interaction.
-/// - [HivesChip]: Compact, interactive chip for tags and selections
+/// Exports chip and related feedback widgets.
 library feedback;
 
 export 'hives_chip.dart';
