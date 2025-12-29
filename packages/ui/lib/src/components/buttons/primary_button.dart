@@ -99,6 +99,26 @@ class _PrimaryButtonState extends State<PrimaryButton>
     _animationController.reverse();
   }
 
+  Widget _tintedIcon(Widget icon, Color color) {
+    if (icon is Icon) {
+      return Icon(
+        icon.icon,
+        size: icon.size,
+        color: color,
+        semanticLabel: icon.semanticLabel,
+        textDirection: icon.textDirection,
+        fill: icon.fill,
+        grade: icon.grade,
+        opticalSize: icon.opticalSize,
+        shadows: icon.shadows,
+      );
+    }
+    return IconTheme(
+      data: IconThemeData(color: color),
+      child: icon,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -156,12 +176,7 @@ class _PrimaryButtonState extends State<PrimaryButton>
                           ),
                         )
                       else if (widget.icon != null && widget.iconLeading)
-                        IconTheme(
-                          data: IconThemeData(
-                            color: theme.colorScheme.onPrimary,
-                          ),
-                          child: widget.icon!,
-                        ),
+                        _tintedIcon(widget.icon!, theme.colorScheme.onPrimary),
                       if ((widget.isLoading || widget.icon != null) &&
                           !(!widget.iconLeading && widget.icon != null))
                         const SizedBox(width: 8.0),
@@ -170,11 +185,11 @@ class _PrimaryButtonState extends State<PrimaryButton>
                           child: Text(
                             widget.label,
                             style:
-                                widget.textStyle ??
-                                theme.textTheme.labelLarge?.copyWith(
-                                  color: theme.colorScheme.onPrimary,
-                                  fontWeight: FontWeight.w600,
-                                ),
+                                (widget.textStyle ?? theme.textTheme.labelLarge)
+                                    ?.copyWith(
+                                      color: theme.colorScheme.onPrimary,
+                                      fontWeight: FontWeight.w600,
+                                    ),
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                           ),
@@ -186,12 +201,7 @@ class _PrimaryButtonState extends State<PrimaryButton>
                       if (!widget.isLoading &&
                           widget.icon != null &&
                           !widget.iconLeading)
-                        IconTheme(
-                          data: IconThemeData(
-                            color: theme.colorScheme.onPrimary,
-                          ),
-                          child: widget.icon!,
-                        ),
+                        _tintedIcon(widget.icon!, theme.colorScheme.onPrimary),
                     ],
                   ),
                 ),
