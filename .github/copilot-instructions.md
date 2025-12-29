@@ -1,5 +1,11 @@
 # Instructions for Effective Dart, Bloc & Clean Architecture
 
+## Project Structure
+- `packages/ui` contains reusable UI components and design system elements.
+- `packages/shared` contains shared code across the packages like DDD and Clean Architecture base classes.
+- `apps/storybook` contains the widgetbook for the app.
+- `apps/mobile` contains the mobile app.
+
 ## Coding Standards
 Follow [Effective Dart](https://dart.dev/effective-dart) guidelines for consistent Documentation & Coding.
 
@@ -422,3 +428,9 @@ Follow [Effective Dart](https://dart.dev/effective-dart) guidelines for consiste
 - DO write widget tests for critical UI flows and visual states.
 - PREFER golden tests for stable, design-critical widgets (when your team uses them).
 - DO keep widgets testable by injecting dependencies and avoiding hidden globals.
+
+### Widgetbook
+- DO create usecases for all reusable widgets in Widgetbook.
+- DO use widgetbook_annotations for usecase definitions.
+- DO organize usecases in folders and categories that reflect the app structure.
+- PREFER documenting widget behavior and variations in usecase descriptions.
