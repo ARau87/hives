@@ -117,10 +117,7 @@ class _HivesTextFieldState extends State<HivesTextField> {
       obscureText: widget.isPassword && !_isPasswordVisible,
       onChanged: widget.onChanged,
       onSubmitted: (_) => widget.onSubmitted?.call(),
-      style: theme.textTheme.bodyLarge?.copyWith(
-        fontWeight: FontWeight.w700,
-        fontSize: (theme.textTheme.bodyLarge?.fontSize ?? 16) + 2,
-      ),
+      style: theme.textTheme.bodyLarge,
       decoration: _buildDecoration(theme, inputTokens),
     );
 
@@ -157,10 +154,7 @@ class _HivesTextFieldState extends State<HivesTextField> {
       prefixIcon: widget.prefixIcon,
       suffixIcon: suffix,
       errorText: widget.errorText,
-      hintStyle: theme.textTheme.bodyLarge?.copyWith(
-        fontWeight: FontWeight.w700,
-        fontSize: (theme.textTheme.bodyLarge?.fontSize ?? 16) + 2,
-      ),
+      hintStyle: theme.textTheme.bodyLarge,
       filled: false,
       fillColor: Colors.transparent,
       contentPadding: inputTokens == null

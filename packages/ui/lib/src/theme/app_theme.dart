@@ -78,79 +78,31 @@ class AppTheme {
   static const TextTheme _textTheme = TextTheme(
     displayLarge: TextStyle(
       fontSize: 57,
-      fontWeight: FontWeight.w400,
+      fontWeight: .w400,
       letterSpacing: -0.25,
     ),
-    displayMedium: TextStyle(
-      fontSize: 45,
-      fontWeight: FontWeight.w400,
-      letterSpacing: 0,
-    ),
-    displaySmall: TextStyle(
-      fontSize: 36,
-      fontWeight: FontWeight.w400,
-      letterSpacing: 0,
-    ),
-    headlineLarge: TextStyle(
-      fontSize: 32,
-      fontWeight: FontWeight.w400,
-      letterSpacing: 0,
-    ),
+    displayMedium: TextStyle(fontSize: 45, fontWeight: .w400, letterSpacing: 0),
+    displaySmall: TextStyle(fontSize: 36, fontWeight: .w400, letterSpacing: 0),
+    headlineLarge: TextStyle(fontSize: 32, fontWeight: .w400, letterSpacing: 0),
     headlineMedium: TextStyle(
       fontSize: 28,
-      fontWeight: FontWeight.w400,
+      fontWeight: .w400,
       letterSpacing: 0,
     ),
-    headlineSmall: TextStyle(
-      fontSize: 24,
-      fontWeight: FontWeight.w400,
-      letterSpacing: 0,
-    ),
-    titleLarge: TextStyle(
-      fontSize: 22,
-      fontWeight: FontWeight.w500,
-      letterSpacing: 0,
-    ),
+    headlineSmall: TextStyle(fontSize: 24, fontWeight: .w400, letterSpacing: 0),
+    titleLarge: TextStyle(fontSize: 22, fontWeight: .w500, letterSpacing: 0),
     titleMedium: TextStyle(
       fontSize: 16,
-      fontWeight: FontWeight.w500,
+      fontWeight: .w500,
       letterSpacing: 0.15,
     ),
-    titleSmall: TextStyle(
-      fontSize: 13,
-      fontWeight: FontWeight.w400,
-      letterSpacing: 0.1,
-    ),
-    bodyLarge: TextStyle(
-      fontSize: 16,
-      fontWeight: FontWeight.w400,
-      letterSpacing: 0.5,
-    ),
-    bodyMedium: TextStyle(
-      fontSize: 14,
-      fontWeight: FontWeight.w400,
-      letterSpacing: 0.25,
-    ),
-    bodySmall: TextStyle(
-      fontSize: 12,
-      fontWeight: FontWeight.w400,
-      letterSpacing: 0.4,
-    ),
-    labelLarge: TextStyle(
-      fontSize: 14,
-      fontWeight: FontWeight.w500,
-      letterSpacing: 0.1,
-    ),
-    labelMedium: TextStyle(
-      fontSize: 12,
-      fontWeight: FontWeight.w500,
-      letterSpacing: 0.5,
-    ),
-    labelSmall: TextStyle(
-      fontSize: 11,
-      fontWeight: FontWeight.w500,
-      letterSpacing: 0.5,
-    ),
+    titleSmall: TextStyle(fontSize: 13, fontWeight: .w400, letterSpacing: 0.1),
+    bodyLarge: TextStyle(fontSize: 16, fontWeight: .w400, letterSpacing: 0.5),
+    bodyMedium: TextStyle(fontSize: 14, fontWeight: .w400, letterSpacing: 0.25),
+    bodySmall: TextStyle(fontSize: 12, fontWeight: .w400, letterSpacing: 0.4),
+    labelLarge: TextStyle(fontSize: 14, fontWeight: .w500, letterSpacing: 0.1),
+    labelMedium: TextStyle(fontSize: 12, fontWeight: .w500, letterSpacing: 0.5),
+    labelSmall: TextStyle(fontSize: 11, fontWeight: .w500, letterSpacing: 0.5),
   );
 
   // Light Theme
@@ -169,39 +121,47 @@ class AppTheme {
       ),
       cardTheme: CardThemeData(
         elevation: 1,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+        shape: RoundedRectangleBorder(borderRadius: .circular(12)),
       ),
       filledButtonTheme: FilledButtonThemeData(
         style: FilledButton.styleFrom(
           minimumSize: const Size(64, 48),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
+          shape: RoundedRectangleBorder(borderRadius: .circular(12)),
+          textStyle: TextStyle(
+            color: _lightColorScheme.onPrimary,
+            fontWeight: .bold,
           ),
         ),
       ),
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
           minimumSize: const Size(64, 48),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
-          ),
+          shape: RoundedRectangleBorder(borderRadius: .circular(12)),
           elevation: 1,
+          textStyle: TextStyle(
+            color: _lightColorScheme.onPrimary,
+            fontWeight: .bold,
+          ),
         ),
       ),
       outlinedButtonTheme: OutlinedButtonThemeData(
         style: OutlinedButton.styleFrom(
           minimumSize: const Size(64, 48),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(14),
-          ),
+          shape: RoundedRectangleBorder(borderRadius: .circular(14)),
           side: const BorderSide(width: 2),
+          textStyle: TextStyle(
+            color: _lightColorScheme.primary,
+            fontWeight: .bold,
+          ),
         ),
       ),
       textButtonTheme: TextButtonThemeData(
         style: TextButton.styleFrom(
           minimumSize: const Size(64, 48),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
+          shape: RoundedRectangleBorder(borderRadius: .circular(12)),
+          textStyle: TextStyle(
+            color: _lightColorScheme.primary,
+            fontWeight: .bold,
           ),
         ),
       ),
@@ -209,42 +169,39 @@ class AppTheme {
         filled: false,
         fillColor: Colors.transparent,
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: .circular(12),
           borderSide: BorderSide(color: _lightColorScheme.primary, width: 1.5),
         ),
         enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: .circular(12),
           borderSide: BorderSide(color: _lightColorScheme.primary, width: 1.5),
         ),
         focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: .circular(12),
           borderSide: BorderSide(color: _lightColorScheme.primary, width: 2.5),
         ),
         errorBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: .circular(12),
           borderSide: BorderSide(color: _lightColorScheme.error, width: 1.5),
         ),
         focusedErrorBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: .circular(12),
           borderSide: BorderSide(color: _lightColorScheme.error, width: 2.5),
         ),
-        contentPadding: const EdgeInsets.symmetric(
-          horizontal: 18,
-          vertical: 18,
-        ),
+        contentPadding: const .symmetric(horizontal: 18, vertical: 18),
       ),
       floatingActionButtonTheme: FloatingActionButtonThemeData(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+        shape: RoundedRectangleBorder(borderRadius: .circular(16)),
       ),
       chipTheme: ChipThemeData(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+        shape: RoundedRectangleBorder(borderRadius: .circular(8)),
       ),
       dialogTheme: DialogThemeData(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(28)),
+        shape: RoundedRectangleBorder(borderRadius: .circular(28)),
       ),
       bottomSheetTheme: const BottomSheetThemeData(
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.vertical(top: Radius.circular(28)),
+          borderRadius: .vertical(top: .circular(28)),
         ),
       ),
       extensions: [
@@ -273,14 +230,12 @@ class AppTheme {
       ),
       cardTheme: CardThemeData(
         elevation: 1,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+        shape: RoundedRectangleBorder(borderRadius: .circular(12)),
       ),
       filledButtonTheme: FilledButtonThemeData(
         style: FilledButton.styleFrom(
           minimumSize: const Size(64, 48),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
-          ),
+          shape: RoundedRectangleBorder(borderRadius: .circular(12)),
         ),
       ),
       elevatedButtonTheme: ElevatedButtonThemeData(
@@ -304,51 +259,46 @@ class AppTheme {
       textButtonTheme: TextButtonThemeData(
         style: TextButton.styleFrom(
           minimumSize: const Size(64, 48),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
-          ),
+          shape: RoundedRectangleBorder(borderRadius: .circular(12)),
         ),
       ),
       inputDecorationTheme: InputDecorationTheme(
         filled: false,
         fillColor: Colors.transparent,
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: .circular(12),
           borderSide: BorderSide(color: _darkColorScheme.primary, width: 1.5),
         ),
         enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: .circular(12),
           borderSide: BorderSide(color: _darkColorScheme.primary, width: 1.5),
         ),
         focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: .circular(12),
           borderSide: BorderSide(color: _darkColorScheme.primary, width: 2.5),
         ),
         errorBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: .circular(12),
           borderSide: BorderSide(color: _darkColorScheme.error, width: 1.5),
         ),
         focusedErrorBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: .circular(12),
           borderSide: BorderSide(color: _darkColorScheme.error, width: 2.5),
         ),
-        contentPadding: const EdgeInsets.symmetric(
-          horizontal: 18,
-          vertical: 18,
-        ),
+        contentPadding: const .symmetric(horizontal: 18, vertical: 18),
       ),
       floatingActionButtonTheme: FloatingActionButtonThemeData(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+        shape: RoundedRectangleBorder(borderRadius: .circular(16)),
       ),
       chipTheme: ChipThemeData(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+        shape: RoundedRectangleBorder(borderRadius: .circular(8)),
       ),
       dialogTheme: DialogThemeData(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(28)),
+        shape: RoundedRectangleBorder(borderRadius: .circular(28)),
       ),
       bottomSheetTheme: const BottomSheetThemeData(
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.vertical(top: Radius.circular(28)),
+          borderRadius: .vertical(top: .circular(28)),
         ),
       ),
       extensions: [

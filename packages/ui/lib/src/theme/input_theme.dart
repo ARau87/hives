@@ -57,7 +57,7 @@ class InputThemeTokens extends ThemeExtension<InputThemeTokens> {
       minHeight: 48.0,
       disabledOpacity: 0.5,
       animationDuration: Duration(milliseconds: 200),
-      hintFontSize: 16.0,
+      hintFontSize: 14.0,
     );
   }
 
