@@ -8,7 +8,9 @@ import '../../theme/hives_colors.dart';
 /// The gradient is provided via an outer [DecoratedBox], while the
 /// [FilledButton] handles interaction, semantics, and overlay. Sizing and
 /// spacing are driven by [ButtonThemeTokens], and colors by [HivesColors].
-class HighlightButton extends StatelessWidget {
+///
+/// When [isLoading] is true, displays a shimmering animation effect.
+class HighlightButton extends StatefulWidget {
   /// The text label displayed on the button.
   final String label;
 
@@ -54,6 +56,49 @@ class HighlightButton extends StatelessWidget {
   });
 
   @override
+  State<HighlightButton> createState() => _HighlightButtonState();
+}
+
+class _HighlightButtonState extends State<HighlightButton>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _shimmerController;
+  late Animation<double> _shimmerAnimation;
+
+  @override
+  void initState() {
+    super.initState();
+    _shimmerController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 2000),
+    );
+
+    _shimmerAnimation = Tween<double>(begin: -0.5, end: 1.5).animate(
+      CurvedAnimation(parent: _shimmerController, curve: Curves.linear),
+    );
+
+    if (widget.isLoading) {
+      _shimmerController.repeat();
+    }
+  }
+
+  @override
+  void didUpdateWidget(HighlightButton oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.isLoading && !oldWidget.isLoading) {
+      _shimmerController.repeat();
+    } else if (!widget.isLoading && oldWidget.isLoading) {
+      _shimmerController.stop();
+      _shimmerController.reset();
+    }
+  }
+
+  @override
+  void dispose() {
+    _shimmerController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final colors = theme.hivesColors;
@@ -65,28 +110,33 @@ class HighlightButton extends StatelessWidget {
       begin: Alignment.centerLeft,
       end: Alignment.centerRight,
       colors: [
-        isEnabled && !isLoading
+        widget.isEnabled && !widget.isLoading
             ? colors.honey
             : colors.honey.withValues(alpha: tokens.disabledOpacity),
-        isEnabled && !isLoading
+        widget.isEnabled && !widget.isLoading
             ? colors.orange
             : colors.orange.withValues(alpha: tokens.disabledOpacity),
       ],
     );
 
     final button = FilledButton.icon(
-      onPressed: isEnabled && !isLoading ? onPressed : null,
+      onPressed: widget.isEnabled && !widget.isLoading
+          ? widget.onPressed
+          : null,
       style:
           FilledButton.styleFrom(
             backgroundColor: Colors.transparent,
             shadowColor: Colors.transparent,
             shape: RoundedRectangleBorder(borderRadius: radius),
-            padding: padding,
-            iconAlignment: iconLeading
+            padding: widget.padding,
+            iconAlignment: widget.iconLeading
                 ? IconAlignment.start
                 : IconAlignment.end,
             iconColor: theme.colorScheme.onPrimary,
-            minimumSize: Size(width ?? 64, height ?? tokens.minHeight),
+            minimumSize: Size(
+              widget.width ?? 64,
+              widget.height ?? tokens.minHeight,
+            ),
           ).merge(
             ButtonStyle(
               overlayColor: WidgetStateProperty.resolveWith<Color?>((states) {
@@ -103,22 +153,86 @@ class HighlightButton extends StatelessWidget {
               }),
             ),
           ),
-      icon: icon ?? const SizedBox.shrink(),
+      icon: widget.icon ?? const SizedBox.shrink(),
       label: Text(
-        label,
-        style: TextStyle(color: theme.colorScheme.onPrimary).merge(textStyle),
+        widget.label,
+        style: TextStyle(
+          color: theme.colorScheme.onPrimary,
+        ).merge(widget.textStyle),
       ),
     );
 
-    final decorated = DecoratedBox(
+    // Base decorated box with gradient
+    final baseDecoration = DecoratedBox(
       decoration: BoxDecoration(gradient: gradient, borderRadius: radius),
       child: ClipRRect(borderRadius: radius, child: button),
     );
 
-    if (width != null || height != null) {
-      return SizedBox(width: width, height: height, child: decorated);
+    // Wrap with shimmer if loading
+    final decorated = widget.isLoading
+        ? ClipRRect(
+            borderRadius: radius,
+            child: _buildShimmerEffect(context, gradient, radius, button),
+          )
+        : baseDecoration;
+
+    // Ensure consistent sizing
+    if (widget.width != null || widget.height != null) {
+      return SizedBox(
+        width: widget.width,
+        height: widget.height,
+        child: decorated,
+      );
     }
 
     return decorated;
+  }
+
+  /// Builds the shimmer effect for the loading state.
+  Widget _buildShimmerEffect(
+    BuildContext context,
+    Gradient gradient,
+    BorderRadius radius,
+    Widget button,
+  ) {
+    return AnimatedBuilder(
+      animation: _shimmerAnimation,
+      builder: (context, child) {
+        final double progress = _shimmerAnimation.value;
+
+        return DecoratedBox(
+          decoration: BoxDecoration(gradient: gradient, borderRadius: radius),
+          child: Stack(
+            fit: StackFit.passthrough,
+            children: [
+              button,
+              Positioned.fill(
+                child: IgnorePointer(
+                  child: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: radius,
+                      gradient: LinearGradient(
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                        colors: [
+                          Colors.white.withValues(alpha: 0.0),
+                          Colors.white.withValues(alpha: 0.5),
+                          Colors.white.withValues(alpha: 0.0),
+                        ],
+                        stops: [
+                          (progress - 0.3).clamp(0.0, 1.0),
+                          progress.clamp(0.0, 1.0),
+                          (progress + 0.3).clamp(0.0, 1.0),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
   }
 }
