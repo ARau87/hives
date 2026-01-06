@@ -1,0 +1,14 @@
+name: authentication
+description: "Authentication feature for the Hives project."
+version: 0.0.1
+environment:
+  sdk: ^3.10.3
+resolution: workspace
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
