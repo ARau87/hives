@@ -1,0 +1,844 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>hives - Design Direction Exploration</title>
+    <style>
+        :root {
+            --primary: #F59E0B;
+            --primary-dark: #D97706;
+            --secondary: #78716C;
+            --background: #FFFBEB;
+            --surface: #FEF3C7;
+            --on-surface: #292524;
+            --healthy: #16A34A;
+            --attention: #F59E0B;
+            --urgent: #DC2626;
+            --unknown: #64748B;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #1a1a1a;
+            color: white;
+            line-height: 1.5;
+        }
+
+        .header {
+            background: #2a2a2a;
+            padding: 24px;
+            text-align: center;
+            border-bottom: 1px solid #444;
+        }
+
+        .header h1 { font-size: 28px; margin-bottom: 8px; }
+        .header p { color: #888; font-size: 16px; }
+
+        .nav {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            padding: 16px;
+            background: #222;
+            flex-wrap: wrap;
+        }
+
+        .nav button {
+            padding: 12px 24px;
+            border: 2px solid #444;
+            background: transparent;
+            color: white;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.2s;
+        }
+
+        .nav button:hover { border-color: var(--primary); }
+        .nav button.active { background: var(--primary); border-color: var(--primary); color: #000; }
+
+        .mockup-container {
+            max-width: 400px;
+            margin: 24px auto;
+            background: #000;
+            border-radius: 40px;
+            padding: 12px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+        }
+
+        .phone-screen {
+            background: var(--background);
+            border-radius: 32px;
+            overflow: hidden;
+            height: 800px;
+            position: relative;
+        }
+
+        .mockup { display: none; height: 100%; }
+        .mockup.active { display: flex; flex-direction: column; }
+
+        /* Shared Components */
+        .status-bar {
+            height: 44px;
+            background: var(--primary-dark);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .bottom-nav {
+            display: flex;
+            background: white;
+            border-top: 1px solid #e5e5e5;
+            padding: 8px 0 24px 0;
+        }
+
+        .bottom-nav-item {
+            flex: 1;
+            text-align: center;
+            padding: 8px;
+            color: var(--secondary);
+            font-size: 12px;
+        }
+
+        .bottom-nav-item.active { color: var(--primary-dark); }
+        .bottom-nav-item .icon { font-size: 24px; margin-bottom: 4px; }
+
+        .content { flex: 1; overflow-y: auto; }
+
+        /* Direction 1: Card Dashboard */
+        .card-dashboard { padding: 16px; }
+        .card-dashboard h2 {
+            color: var(--on-surface);
+            font-size: 24px;
+            margin-bottom: 16px;
+        }
+        .summary-row {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+        .summary-card {
+            flex: 1;
+            background: white;
+            border-radius: 12px;
+            padding: 12px;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+        .summary-card .number { font-size: 28px; font-weight: bold; color: var(--on-surface); }
+        .summary-card .label { font-size: 12px; color: var(--secondary); }
+
+        .hive-card {
+            background: white;
+            border-radius: 16px;
+            padding: 16px;
+            margin-bottom: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .hive-status {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+        .hive-status.healthy { background: #dcfce7; }
+        .hive-status.attention { background: #fef3c7; }
+        .hive-status.urgent { background: #fee2e2; }
+        .hive-info { flex: 1; }
+        .hive-name { font-weight: 600; color: var(--on-surface); font-size: 16px; }
+        .hive-location { font-size: 14px; color: var(--secondary); }
+        .hive-action {
+            background: var(--surface);
+            border: none;
+            padding: 10px 16px;
+            border-radius: 8px;
+            color: var(--primary-dark);
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        /* Direction 2: Kanban Style */
+        .kanban-dashboard { padding: 16px; }
+        .kanban-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+        .kanban-header h2 { color: var(--on-surface); font-size: 20px; }
+        .kanban-columns {
+            display: flex;
+            gap: 12px;
+            overflow-x: auto;
+            padding-bottom: 16px;
+        }
+        .kanban-column {
+            min-width: 140px;
+            background: white;
+            border-radius: 12px;
+            padding: 12px;
+        }
+        .column-header {
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .column-header .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+        }
+        .column-header .dot.urgent { background: var(--urgent); }
+        .column-header .dot.attention { background: var(--attention); }
+        .column-header .dot.healthy { background: var(--healthy); }
+        .kanban-card {
+            background: var(--surface);
+            border-radius: 8px;
+            padding: 10px;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+        .kanban-card .name { font-weight: 600; color: var(--on-surface); }
+        .kanban-card .meta { font-size: 12px; color: var(--secondary); margin-top: 4px; }
+
+        /* Direction 3: Map Focus */
+        .map-dashboard { height: 100%; display: flex; flex-direction: column; }
+        .map-area {
+            flex: 1;
+            background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+            position: relative;
+        }
+        .map-pin {
+            position: absolute;
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: white;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            transform: translate(-50%, -50%);
+        }
+        .map-pin.healthy { border: 3px solid var(--healthy); }
+        .map-pin.attention { border: 3px solid var(--attention); }
+        .map-pin .count {
+            position: absolute;
+            top: -4px;
+            right: -4px;
+            background: var(--on-surface);
+            color: white;
+            font-size: 12px;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .location-drawer {
+            background: white;
+            border-radius: 24px 24px 0 0;
+            padding: 16px;
+            box-shadow: 0 -4px 20px rgba(0,0,0,0.1);
+        }
+        .drawer-handle {
+            width: 40px;
+            height: 4px;
+            background: #ddd;
+            border-radius: 2px;
+            margin: 0 auto 16px;
+        }
+        .location-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        .location-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+        .location-icon.healthy { background: #dcfce7; }
+        .location-icon.attention { background: #fef3c7; }
+
+        /* Direction 4: List Compact */
+        .list-dashboard { padding: 16px; }
+        .list-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+        .list-header h2 { font-size: 20px; color: var(--on-surface); }
+        .filter-pills {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+        .filter-pill {
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+            background: white;
+            color: var(--secondary);
+            border: 1px solid #e5e5e5;
+        }
+        .filter-pill.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+        .list-item {
+            display: flex;
+            align-items: center;
+            padding: 14px;
+            background: white;
+            border-radius: 12px;
+            margin-bottom: 8px;
+            gap: 12px;
+        }
+        .list-status {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+        .list-status.healthy { background: var(--healthy); }
+        .list-status.attention { background: var(--attention); }
+        .list-status.urgent { background: var(--urgent); }
+        .list-content { flex: 1; }
+        .list-title { font-weight: 600; font-size: 15px; color: var(--on-surface); }
+        .list-subtitle { font-size: 13px; color: var(--secondary); }
+        .list-arrow { color: #ccc; font-size: 20px; }
+
+        /* Direction 5: Task Focus */
+        .task-dashboard { padding: 16px; }
+        .today-section {
+            background: var(--primary);
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 16px;
+            color: white;
+        }
+        .today-date { font-size: 14px; opacity: 0.8; }
+        .today-title { font-size: 24px; font-weight: bold; margin: 4px 0; }
+        .today-subtitle { font-size: 14px; opacity: 0.9; }
+        .task-list { margin-top: 16px; }
+        .task-card {
+            background: white;
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+        }
+        .task-checkbox {
+            width: 24px;
+            height: 24px;
+            border: 2px solid var(--secondary);
+            border-radius: 6px;
+            flex-shrink: 0;
+        }
+        .task-checkbox.done {
+            background: var(--healthy);
+            border-color: var(--healthy);
+        }
+        .task-details { flex: 1; }
+        .task-title { font-weight: 600; color: var(--on-surface); }
+        .task-meta { font-size: 13px; color: var(--secondary); margin-top: 4px; }
+        .task-hive {
+            background: var(--surface);
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 12px;
+            color: var(--primary-dark);
+            font-weight: 500;
+        }
+
+        /* Direction 6: Minimal */
+        .minimal-dashboard { padding: 24px; }
+        .minimal-greeting {
+            font-size: 28px;
+            font-weight: 300;
+            color: var(--on-surface);
+            margin-bottom: 24px;
+        }
+        .minimal-greeting strong { font-weight: 600; }
+        .minimal-stat {
+            display: flex;
+            justify-content: space-between;
+            padding: 20px 0;
+            border-bottom: 1px solid #e5e5e5;
+        }
+        .minimal-stat-label { color: var(--secondary); font-size: 16px; }
+        .minimal-stat-value {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--on-surface);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .minimal-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+        }
+        .minimal-action {
+            margin-top: 32px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 18px;
+            border-radius: 14px;
+            font-size: 18px;
+            font-weight: 600;
+            width: 100%;
+            cursor: pointer;
+        }
+
+        /* Description panel */
+        .description {
+            max-width: 600px;
+            margin: 24px auto;
+            padding: 24px;
+            background: #2a2a2a;
+            border-radius: 16px;
+        }
+        .description h3 {
+            color: var(--primary);
+            margin-bottom: 12px;
+            font-size: 20px;
+        }
+        .description p {
+            color: #aaa;
+            margin-bottom: 12px;
+            line-height: 1.6;
+        }
+        .description ul {
+            color: #888;
+            margin-left: 20px;
+        }
+        .description li { margin-bottom: 8px; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>hives - Design Directions</h1>
+        <p>Explore different visual approaches for your beekeeping app</p>
+    </div>
+
+    <nav class="nav">
+        <button class="active" onclick="showMockup(1)">1. Card Dashboard</button>
+        <button onclick="showMockup(2)">2. Kanban Flow</button>
+        <button onclick="showMockup(3)">3. Map Focus</button>
+        <button onclick="showMockup(4)">4. List Compact</button>
+        <button onclick="showMockup(5)">5. Task First</button>
+        <button onclick="showMockup(6)">6. Minimal</button>
+    </nav>
+
+    <div class="mockup-container">
+        <div class="phone-screen">
+            <!-- Direction 1: Card Dashboard -->
+            <div class="mockup active" id="mockup-1">
+                <div class="status-bar">hives</div>
+                <div class="content card-dashboard">
+                    <h2>Good morning, Andreas</h2>
+                    <div class="summary-row">
+                        <div class="summary-card">
+                            <div class="number">18</div>
+                            <div class="label">Total Hives</div>
+                        </div>
+                        <div class="summary-card">
+                            <div class="number" style="color: var(--urgent)">3</div>
+                            <div class="label">Need Attention</div>
+                        </div>
+                    </div>
+                    <div class="hive-card">
+                        <div class="hive-status urgent">🐝</div>
+                        <div class="hive-info">
+                            <div class="hive-name">Hive 5 - Sunny</div>
+                            <div class="hive-location">Home Garden • Reserves low</div>
+                        </div>
+                        <button class="hive-action">Log</button>
+                    </div>
+                    <div class="hive-card">
+                        <div class="hive-status attention">🐝</div>
+                        <div class="hive-info">
+                            <div class="hive-name">Hive 2 - Shadow</div>
+                            <div class="hive-location">Home Garden • Check queen</div>
+                        </div>
+                        <button class="hive-action">Log</button>
+                    </div>
+                    <div class="hive-card">
+                        <div class="hive-status healthy">🐝</div>
+                        <div class="hive-info">
+                            <div class="hive-name">Hive 1 - Original</div>
+                            <div class="hive-location">Home Garden • All good</div>
+                        </div>
+                        <button class="hive-action">Log</button>
+                    </div>
+                </div>
+                <div class="bottom-nav">
+                    <div class="bottom-nav-item active"><div class="icon">🏠</div>Home</div>
+                    <div class="bottom-nav-item"><div class="icon">📍</div>Locations</div>
+                    <div class="bottom-nav-item"><div class="icon">✓</div>Tasks</div>
+                    <div class="bottom-nav-item"><div class="icon">⚙️</div>Settings</div>
+                </div>
+            </div>
+
+            <!-- Direction 2: Kanban -->
+            <div class="mockup" id="mockup-2">
+                <div class="status-bar">hives</div>
+                <div class="content kanban-dashboard">
+                    <div class="kanban-header">
+                        <h2>All Hives</h2>
+                        <span style="color: var(--secondary)">18 total</span>
+                    </div>
+                    <div class="kanban-columns">
+                        <div class="kanban-column">
+                            <div class="column-header"><span class="dot urgent"></span>Urgent (2)</div>
+                            <div class="kanban-card">
+                                <div class="name">Hive 5</div>
+                                <div class="meta">Reserves low</div>
+                            </div>
+                            <div class="kanban-card">
+                                <div class="name">Hive 8</div>
+                                <div class="meta">Queenless?</div>
+                            </div>
+                        </div>
+                        <div class="kanban-column">
+                            <div class="column-header"><span class="dot attention"></span>Check (4)</div>
+                            <div class="kanban-card">
+                                <div class="name">Hive 2</div>
+                                <div class="meta">2 weeks ago</div>
+                            </div>
+                            <div class="kanban-card">
+                                <div class="name">Hive 3</div>
+                                <div class="meta">Varroa due</div>
+                            </div>
+                        </div>
+                        <div class="kanban-column">
+                            <div class="column-header"><span class="dot healthy"></span>Good (12)</div>
+                            <div class="kanban-card">
+                                <div class="name">Hive 1</div>
+                                <div class="meta">3 days ago</div>
+                            </div>
+                            <div class="kanban-card">
+                                <div class="name">Hive 4</div>
+                                <div class="meta">5 days ago</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="bottom-nav">
+                    <div class="bottom-nav-item active"><div class="icon">🏠</div>Board</div>
+                    <div class="bottom-nav-item"><div class="icon">📍</div>Map</div>
+                    <div class="bottom-nav-item"><div class="icon">✓</div>Tasks</div>
+                    <div class="bottom-nav-item"><div class="icon">⚙️</div>Settings</div>
+                </div>
+            </div>
+
+            <!-- Direction 3: Map Focus -->
+            <div class="mockup" id="mockup-3">
+                <div class="status-bar">hives</div>
+                <div class="content map-dashboard">
+                    <div class="map-area">
+                        <div class="map-pin healthy" style="top: 30%; left: 25%;">
+                            🐝
+                            <span class="count">4</span>
+                        </div>
+                        <div class="map-pin attention" style="top: 50%; left: 70%;">
+                            🐝
+                            <span class="count">8</span>
+                        </div>
+                        <div class="map-pin healthy" style="top: 75%; left: 45%;">
+                            🐝
+                            <span class="count">6</span>
+                        </div>
+                    </div>
+                    <div class="location-drawer">
+                        <div class="drawer-handle"></div>
+                        <div class="location-item">
+                            <div class="location-icon healthy">🏡</div>
+                            <div style="flex:1">
+                                <div style="font-weight:600;color:var(--on-surface)">Home Garden</div>
+                                <div style="font-size:13px;color:var(--secondary)">4 hives • All good</div>
+                            </div>
+                        </div>
+                        <div class="location-item">
+                            <div class="location-icon attention">🌾</div>
+                            <div style="flex:1">
+                                <div style="font-weight:600;color:var(--on-surface)">Parent's Farm</div>
+                                <div style="font-size:13px;color:var(--secondary)">8 hives • 2 need attention</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="bottom-nav">
+                    <div class="bottom-nav-item active"><div class="icon">📍</div>Map</div>
+                    <div class="bottom-nav-item"><div class="icon">🐝</div>Hives</div>
+                    <div class="bottom-nav-item"><div class="icon">✓</div>Tasks</div>
+                    <div class="bottom-nav-item"><div class="icon">⚙️</div>Settings</div>
+                </div>
+            </div>
+
+            <!-- Direction 4: List Compact -->
+            <div class="mockup" id="mockup-4">
+                <div class="status-bar">hives</div>
+                <div class="content list-dashboard">
+                    <div class="list-header">
+                        <h2>Hives</h2>
+                        <span style="color:var(--secondary)">18</span>
+                    </div>
+                    <div class="filter-pills">
+                        <div class="filter-pill active">All</div>
+                        <div class="filter-pill">Urgent</div>
+                        <div class="filter-pill">Check</div>
+                        <div class="filter-pill">Good</div>
+                    </div>
+                    <div class="list-item">
+                        <div class="list-status urgent"></div>
+                        <div class="list-content">
+                            <div class="list-title">Hive 5 - Sunny</div>
+                            <div class="list-subtitle">Reserves low • Feed needed</div>
+                        </div>
+                        <div class="list-arrow">›</div>
+                    </div>
+                    <div class="list-item">
+                        <div class="list-status urgent"></div>
+                        <div class="list-content">
+                            <div class="list-title">Hive 8 - Queen Bee</div>
+                            <div class="list-subtitle">Queenless suspected</div>
+                        </div>
+                        <div class="list-arrow">›</div>
+                    </div>
+                    <div class="list-item">
+                        <div class="list-status attention"></div>
+                        <div class="list-content">
+                            <div class="list-title">Hive 2 - Shadow</div>
+                            <div class="list-subtitle">Last inspection 14 days ago</div>
+                        </div>
+                        <div class="list-arrow">›</div>
+                    </div>
+                    <div class="list-item">
+                        <div class="list-status healthy"></div>
+                        <div class="list-content">
+                            <div class="list-title">Hive 1 - Original</div>
+                            <div class="list-subtitle">All good • 3 days ago</div>
+                        </div>
+                        <div class="list-arrow">›</div>
+                    </div>
+                    <div class="list-item">
+                        <div class="list-status healthy"></div>
+                        <div class="list-content">
+                            <div class="list-title">Hive 4 - Buzzy</div>
+                            <div class="list-subtitle">Strong colony • 5 days ago</div>
+                        </div>
+                        <div class="list-arrow">›</div>
+                    </div>
+                </div>
+                <div class="bottom-nav">
+                    <div class="bottom-nav-item active"><div class="icon">🐝</div>Hives</div>
+                    <div class="bottom-nav-item"><div class="icon">📍</div>Locations</div>
+                    <div class="bottom-nav-item"><div class="icon">✓</div>Tasks</div>
+                    <div class="bottom-nav-item"><div class="icon">⚙️</div>Settings</div>
+                </div>
+            </div>
+
+            <!-- Direction 5: Task First -->
+            <div class="mockup" id="mockup-5">
+                <div class="status-bar">hives</div>
+                <div class="content task-dashboard">
+                    <div class="today-section">
+                        <div class="today-date">Saturday, Feb 15</div>
+                        <div class="today-title">3 tasks today</div>
+                        <div class="today-subtitle">2 hives need inspection</div>
+                    </div>
+                    <div class="task-list">
+                        <div class="task-card">
+                            <div class="task-checkbox"></div>
+                            <div class="task-details">
+                                <div class="task-title">Feed hive - low reserves</div>
+                                <div class="task-meta">Bring: 2L syrup, feeder</div>
+                            </div>
+                            <span class="task-hive">Hive 5</span>
+                        </div>
+                        <div class="task-card">
+                            <div class="task-checkbox"></div>
+                            <div class="task-details">
+                                <div class="task-title">Check for queen</div>
+                                <div class="task-meta">Look for eggs or larvae</div>
+                            </div>
+                            <span class="task-hive">Hive 8</span>
+                        </div>
+                        <div class="task-card">
+                            <div class="task-checkbox"></div>
+                            <div class="task-details">
+                                <div class="task-title">Routine inspection</div>
+                                <div class="task-meta">Last checked 14 days ago</div>
+                            </div>
+                            <span class="task-hive">Hive 2</span>
+                        </div>
+                        <div class="task-card">
+                            <div class="task-checkbox done"></div>
+                            <div class="task-details" style="opacity:0.5;text-decoration:line-through">
+                                <div class="task-title">Buy syrup</div>
+                                <div class="task-meta">10L needed</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="bottom-nav">
+                    <div class="bottom-nav-item active"><div class="icon">✓</div>Today</div>
+                    <div class="bottom-nav-item"><div class="icon">🐝</div>Hives</div>
+                    <div class="bottom-nav-item"><div class="icon">📍</div>Map</div>
+                    <div class="bottom-nav-item"><div class="icon">⚙️</div>Settings</div>
+                </div>
+            </div>
+
+            <!-- Direction 6: Minimal -->
+            <div class="mockup" id="mockup-6">
+                <div class="status-bar">hives</div>
+                <div class="content minimal-dashboard">
+                    <div class="minimal-greeting">
+                        Good morning,<br><strong>Andreas</strong>
+                    </div>
+                    <div class="minimal-stat">
+                        <span class="minimal-stat-label">Total hives</span>
+                        <span class="minimal-stat-value">18</span>
+                    </div>
+                    <div class="minimal-stat">
+                        <span class="minimal-stat-label">Need attention</span>
+                        <span class="minimal-stat-value">
+                            <span class="minimal-dot" style="background:var(--urgent)"></span>
+                            2
+                        </span>
+                    </div>
+                    <div class="minimal-stat">
+                        <span class="minimal-stat-label">Check soon</span>
+                        <span class="minimal-stat-value">
+                            <span class="minimal-dot" style="background:var(--attention)"></span>
+                            4
+                        </span>
+                    </div>
+                    <div class="minimal-stat">
+                        <span class="minimal-stat-label">All good</span>
+                        <span class="minimal-stat-value">
+                            <span class="minimal-dot" style="background:var(--healthy)"></span>
+                            12
+                        </span>
+                    </div>
+                    <button class="minimal-action">Start Inspection</button>
+                </div>
+                <div class="bottom-nav">
+                    <div class="bottom-nav-item active"><div class="icon">🏠</div>Home</div>
+                    <div class="bottom-nav-item"><div class="icon">🐝</div>Hives</div>
+                    <div class="bottom-nav-item"><div class="icon">📍</div>Map</div>
+                    <div class="bottom-nav-item"><div class="icon">⚙️</div>Settings</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="description" id="description-1">
+        <h3>Direction 1: Card Dashboard</h3>
+        <p>Classic card-based approach with summary stats at top, hive cards below. Each card shows status, location, and quick action button.</p>
+        <ul>
+            <li><strong>Pros:</strong> Familiar pattern, easy to scan, clear hierarchy</li>
+            <li><strong>Cons:</strong> Can get long with many hives</li>
+            <li><strong>Best for:</strong> Users who want detail at a glance</li>
+        </ul>
+    </div>
+
+    <div class="description" id="description-2" style="display:none">
+        <h3>Direction 2: Kanban Flow</h3>
+        <p>Horizontal columns showing hive status flow - inspired by your developer background. Hives move through Urgent → Check → Good states.</p>
+        <ul>
+            <li><strong>Pros:</strong> Visual status at a glance, feels like workflow</li>
+            <li><strong>Cons:</strong> Horizontal scroll on mobile, less detail</li>
+            <li><strong>Best for:</strong> Quick triage, seeing the big picture</li>
+        </ul>
+    </div>
+
+    <div class="description" id="description-3" style="display:none">
+        <h3>Direction 3: Map Focus</h3>
+        <p>Map-first approach for multi-location users like Elena. Location pins show status, drawer reveals details.</p>
+        <ul>
+            <li><strong>Pros:</strong> Great for route planning, spatial awareness</li>
+            <li><strong>Cons:</strong> Less useful for single-location users</li>
+            <li><strong>Best for:</strong> Multi-location beekeepers</li>
+        </ul>
+    </div>
+
+    <div class="description" id="description-4" style="display:none">
+        <h3>Direction 4: List Compact</h3>
+        <p>Dense, efficient list with filter chips. Maximum information density, minimal decoration.</p>
+        <ul>
+            <li><strong>Pros:</strong> Fast scanning, scales well, filter flexibility</li>
+            <li><strong>Cons:</strong> Less visual appeal, harder to spot patterns</li>
+            <li><strong>Best for:</strong> Power users with many hives</li>
+        </ul>
+    </div>
+
+    <div class="description" id="description-5" style="display:none">
+        <h3>Direction 5: Task First</h3>
+        <p>Task-oriented approach - leads with "what to do today" rather than hive status. Tasks drive the experience.</p>
+        <ul>
+            <li><strong>Pros:</strong> Action-oriented, clear daily focus, answers "what's next?"</li>
+            <li><strong>Cons:</strong> Hive overview less prominent</li>
+            <li><strong>Best for:</strong> Users who want guidance on priorities</li>
+        </ul>
+    </div>
+
+    <div class="description" id="description-6" style="display:none">
+        <h3>Direction 6: Minimal</h3>
+        <p>Ultra-clean, focused on core numbers. Maximum white space, single prominent action.</p>
+        <ul>
+            <li><strong>Pros:</strong> Calming, focused, modern aesthetic</li>
+            <li><strong>Cons:</strong> Less information, requires drill-down</li>
+            <li><strong>Best for:</strong> Users who prefer simplicity over detail</li>
+        </ul>
+    </div>
+
+    <script>
+        function showMockup(num) {
+            // Hide all mockups
+            document.querySelectorAll('.mockup').forEach(m => m.classList.remove('active'));
+            document.querySelectorAll('.nav button').forEach(b => b.classList.remove('active'));
+            document.querySelectorAll('.description').forEach(d => d.style.display = 'none');
+
+            // Show selected
+            document.getElementById('mockup-' + num).classList.add('active');
+            document.querySelectorAll('.nav button')[num - 1].classList.add('active');
+            document.getElementById('description-' + num).style.display = 'block';
+        }
+    </script>
+</body>
+</html>
