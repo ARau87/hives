@@ -127,6 +127,4 @@ melos_*.yaml
 
 # AI
 _bmad/
-_bmad-output/
-!_bmad-output/planning-artifacts
 
