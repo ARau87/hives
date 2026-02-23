@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter/foundation.dart';
 import 'package:injectable/injectable.dart';
 import 'package:shared/shared.dart';
 
@@ -36,9 +37,9 @@ class EventBus {
   /// Returns the singleton instance of EventBus.
   factory EventBus() => _instance;
 
-  EventBus._();
+  EventBus._internal();
 
-  static final EventBus _instance = EventBus._();
+  static EventBus _instance = EventBus._internal();
 
   /// The singleton instance of EventBus.
   static EventBus get instance => _instance;
@@ -63,6 +64,9 @@ class EventBus {
   /// });
   /// ```
   Stream<T> on<T extends DomainEvent>() {
+    if (_isDisposed) {
+      throw StateError('Cannot subscribe to events after EventBus is disposed');
+    }
     return _controller.stream.where((event) => event is T).cast<T>();
   }
 
@@ -86,10 +90,27 @@ class EventBus {
 
   /// Dispose of the event bus.
   ///
-  /// After disposal, no new events can be published.
+  /// After disposal, no new events can be published or subscribed to.
   /// All existing subscriptions will complete.
+  /// Use [resetForTesting] to restore functionality after disposal in tests.
   void dispose() {
     _isDisposed = true;
     _controller.close();
+  }
+
+  /// Resets the EventBus to a fresh state.
+  ///
+  /// This method is intended for testing purposes only. It creates a new
+  /// StreamController and resets the disposed state, allowing the EventBus
+  /// to be reused between tests.
+  ///
+  /// **Warning:** Do not use in production code. This will cause all
+  /// existing subscriptions to stop receiving events.
+  @visibleForTesting
+  static void resetForTesting() {
+    if (!_instance._controller.isClosed) {
+      _instance._controller.close();
+    }
+    _instance = EventBus._internal();
   }
 }

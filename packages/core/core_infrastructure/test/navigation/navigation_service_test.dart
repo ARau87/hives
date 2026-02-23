@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:core_infrastructure/navigation/navigation_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -63,7 +65,7 @@ void main() {
       expect(find.text('Details'), findsOneWidget);
     });
 
-    testWidgets('push adds route to stack', (tester) async {
+    testWidgets('push adds route to stack and returns Future', (tester) async {
       await tester.pumpWidget(
         MaterialApp.router(
           routerConfig: router,
@@ -72,7 +74,9 @@ void main() {
 
       expect(find.text('Home'), findsOneWidget);
 
-      navigationService.push('/details');
+      final future = navigationService.push('/details');
+      expect(future, isA<Future<Object?>>());
+
       await tester.pumpAndSettle();
 
       expect(find.text('Details'), findsOneWidget);
@@ -91,7 +95,7 @@ void main() {
         ),
       );
 
-      navigationService.push('/details');
+      unawaited(navigationService.push('/details'));
       await tester.pumpAndSettle();
 
       expect(find.text('Details'), findsOneWidget);
@@ -102,6 +106,29 @@ void main() {
       expect(find.text('Home'), findsOneWidget);
     });
 
+    testWidgets('canPop returns false when at root', (tester) async {
+      await tester.pumpWidget(
+        MaterialApp.router(
+          routerConfig: router,
+        ),
+      );
+
+      expect(navigationService.canPop(), isFalse);
+    });
+
+    testWidgets('canPop returns true when route is pushed', (tester) async {
+      await tester.pumpWidget(
+        MaterialApp.router(
+          routerConfig: router,
+        ),
+      );
+
+      unawaited(navigationService.push('/details'));
+      await tester.pumpAndSettle();
+
+      expect(navigationService.canPop(), isTrue);
+    });
+
     testWidgets('replace replaces current route', (tester) async {
       await tester.pumpWidget(
         MaterialApp.router(
@@ -109,7 +136,7 @@ void main() {
         ),
       );
 
-      navigationService.push('/details');
+      unawaited(navigationService.push('/details'));
       await tester.pumpAndSettle();
 
       navigationService.replace('/item/123');
@@ -157,11 +184,39 @@ void main() {
         ),
       );
 
-      navigationService.pushNamed('item', pathParameters: {'id': '789'});
+      final future = navigationService.pushNamed(
+        'item',
+        pathParameters: {'id': '789'},
+      );
+      expect(future, isA<Future<Object?>>());
+
       await tester.pumpAndSettle();
 
       expect(find.text('Item 789'), findsOneWidget);
 
+      navigationService.pop();
+      await tester.pumpAndSettle();
+
+      expect(find.text('Home'), findsOneWidget);
+    });
+
+    testWidgets('replaceNamed replaces current route with named route',
+        (tester) async {
+      await tester.pumpWidget(
+        MaterialApp.router(
+          routerConfig: router,
+        ),
+      );
+
+      unawaited(navigationService.push('/details'));
+      await tester.pumpAndSettle();
+
+      navigationService.replaceNamed('item', pathParameters: {'id': '999'});
+      await tester.pumpAndSettle();
+
+      expect(find.text('Item 999'), findsOneWidget);
+
+      // Pop should return to home (skipping details since it was replaced)
       navigationService.pop();
       await tester.pumpAndSettle();
 

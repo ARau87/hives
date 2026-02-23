@@ -20,10 +20,14 @@ void main() {
     late EventBus eventBus;
 
     setUp(() {
-      // Create a fresh EventBus for each test
-      // Note: In real tests we'd want to reset the singleton,
-      // but for testing we'll use the instance directly
+      // Reset EventBus to a fresh state before each test
+      EventBus.resetForTesting();
       eventBus = EventBus();
+    });
+
+    tearDown(() {
+      // Clean up after each test
+      EventBus.resetForTesting();
     });
 
     test('singleton returns same instance', () {
@@ -116,12 +120,52 @@ void main() {
     });
 
     test('dispose sets isDisposed to true', () {
-      // Note: This test uses the singleton which may affect other tests
-      // In a real scenario, we'd want a way to reset the singleton
+      expect(eventBus.isDisposed, isFalse);
+
+      eventBus.dispose();
+
+      expect(eventBus.isDisposed, isTrue);
+    });
+
+    test('publish throws StateError after dispose', () {
+      eventBus.dispose();
+
+      expect(
+        () => eventBus.publish(TestEvent(aggregateId: '1')),
+        throwsA(isA<StateError>().having(
+          (e) => e.message,
+          'message',
+          contains('Cannot publish events after EventBus is disposed'),
+        )),
+      );
+    });
+
+    test('on throws StateError after dispose', () {
+      eventBus.dispose();
+
+      expect(
+        () => eventBus.on<TestEvent>(),
+        throwsA(isA<StateError>().having(
+          (e) => e.message,
+          'message',
+          contains('Cannot subscribe to events after EventBus is disposed'),
+        )),
+      );
+    });
+
+    test('resetForTesting restores EventBus after dispose', () {
+      eventBus.dispose();
+      expect(eventBus.isDisposed, isTrue);
+
+      EventBus.resetForTesting();
       final freshBus = EventBus();
-      // Since EventBus is a singleton, we can't really test dispose
-      // without affecting other tests. We'll skip the actual dispose.
+
       expect(freshBus.isDisposed, isFalse);
+      // Should be able to publish again
+      expect(
+        () => freshBus.publish(TestEvent(aggregateId: '1')),
+        returnsNormally,
+      );
     });
 
     test('on returns a stream for the specified event type', () {
