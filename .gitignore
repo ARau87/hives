@@ -128,3 +128,10 @@ melos_*.yaml
 # AI
 _bmad/
 
+# Build outputs
+/build/
+
+# vm.json files
+*vm.json
+
+

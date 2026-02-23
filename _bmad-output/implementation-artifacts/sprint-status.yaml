@@ -43,8 +43,8 @@ development_status:
   # Epic 1: Project Foundation & Design System
   epic-1: in-progress
   1-1-initialize-melos-monorepo: done
-  1-2-core-domain-package: backlog
-  1-3-core-infrastructure-package: backlog
+  1-2-core-domain-package: done
+  1-3-core-infrastructure-package: review
   1-4-core-data-package-database-foundation: backlog
   1-5-core-ui-package-design-tokens: backlog
   1-6-core-ui-package-base-widgets: backlog
