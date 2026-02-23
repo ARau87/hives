@@ -1,0 +1,49 @@
+# Shared analysis options for the Hives monorepo.
+# All packages should inherit from this file.
+#
+# See: https://dart.dev/guides/language/analysis-options
+
+include: package:flutter_lints/flutter.yaml
+
+analyzer:
+  errors:
+    # Treat import violations as errors to enforce module boundaries
+    always_use_package_imports: error
+    avoid_relative_lib_imports: error
+  exclude:
+    # Exclude generated files
+    - "**/*.g.dart"
+    - "**/*.freezed.dart"
+    - "**/*.gr.dart"
+    - "**/generated/**"
+    - "**/.dart_tool/**"
+    - "**/build/**"
+
+linter:
+  rules:
+    # Module boundary enforcement (CRITICAL for architecture)
+    always_use_package_imports: true
+    avoid_relative_lib_imports: true
+
+    # Code quality
+    prefer_const_constructors: true
+    prefer_const_declarations: true
+    prefer_final_locals: true
+    prefer_final_fields: true
+    prefer_single_quotes: true
+
+    # Null safety
+    avoid_null_checks_in_equality_operators: true
+
+    # Documentation
+    public_member_api_docs: false  # Enable later for public API
+
+    # Style
+    sort_constructors_first: true
+    sort_unnamed_constructors_first: true
+    unawaited_futures: true
+    unnecessary_await_in_return: true
+
+    # Flutter specific
+    use_key_in_widget_constructors: true
+    sized_box_for_whitespace: true

@@ -1,0 +1,15 @@
+name: hives_feature
+description: "Hive management feature - bounded context for hive CRUD and lifecycle."
+version: 0.0.1
+environment:
+  sdk: ^3.10.3
+resolution: workspace
+
+dependencies:
+  flutter:
+    sdk: flutter
+  shared:
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-
-import '../../theme/input_theme.dart';
+import 'package:ui/src/theme/input_theme.dart';
 
 /// A customized text input field following Hives design system.
 ///

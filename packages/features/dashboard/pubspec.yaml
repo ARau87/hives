@@ -1,0 +1,15 @@
+name: dashboard
+description: "Dashboard feature - aggregates data from other contexts for overview display."
+version: 0.0.1
+environment:
+  sdk: ^3.10.3
+resolution: workspace
+
+dependencies:
+  flutter:
+    sdk: flutter
+  shared:
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter

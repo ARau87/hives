@@ -1,0 +1,140 @@
+# generated: 2026-02-23
+# project: hives
+# project_key: NOKEY
+# tracking_system: file-system
+# story_location: {project-root}/_bmad-output/implementation-artifacts
+
+# STATUS DEFINITIONS:
+# ==================
+# Epic Status:
+#   - backlog: Epic not yet started
+#   - in-progress: Epic actively being worked on
+#   - done: All stories in epic completed
+#
+# Epic Status Transitions:
+#   - backlog → in-progress: Automatically when first story is created (via create-story)
+#   - in-progress → done: Manually when all stories reach 'done' status
+#
+# Story Status:
+#   - backlog: Story only exists in epic file
+#   - ready-for-dev: Story file created in stories folder
+#   - in-progress: Developer actively working on implementation
+#   - review: Ready for code review (via Dev's code-review workflow)
+#   - done: Story completed
+#
+# Retrospective Status:
+#   - optional: Can be completed but not required
+#   - done: Retrospective has been completed
+#
+# WORKFLOW NOTES:
+# ===============
+# - Epic transitions to 'in-progress' automatically when first story is created
+# - Stories can be worked in parallel if team capacity allows
+# - SM typically creates next story after previous one is 'done' to incorporate learnings
+# - Dev moves story to 'review', then runs code-review (fresh context, different LLM recommended)
+
+generated: 2026-02-23
+project: hives
+project_key: NOKEY
+tracking_system: file-system
+story_location: "{project-root}/_bmad-output/implementation-artifacts"
+
+development_status:
+  # Epic 1: Project Foundation & Design System
+  epic-1: in-progress
+  1-1-initialize-melos-monorepo: done
+  1-2-core-domain-package: backlog
+  1-3-core-infrastructure-package: backlog
+  1-4-core-data-package-database-foundation: backlog
+  1-5-core-ui-package-design-tokens: backlog
+  1-6-core-ui-package-base-widgets: backlog
+  1-7-core-ui-package-status-feedback-widgets: backlog
+  1-8-widgetbook-documentation: backlog
+  1-9-app-shell-with-navigation: backlog
+  epic-1-retrospective: optional
+
+  # Epic 2: User Authentication
+  epic-2: backlog
+  2-1-authentication-domain-model: backlog
+  2-2-cognito-data-source: backlog
+  2-3-auth-repository-implementation: backlog
+  2-4-auth-bloc-state-management: backlog
+  2-5-sign-up-screen: backlog
+  2-6-sign-in-screen: backlog
+  2-7-password-recovery-flow: backlog
+  2-8-auth-guard-session-management: backlog
+  epic-2-retrospective: optional
+
+  # Epic 3: Location Management
+  epic-3: backlog
+  3-1-location-domain-model: backlog
+  3-2-location-local-data-source: backlog
+  3-3-location-repository-implementation: backlog
+  3-4-location-bloc-state-management: backlog
+  3-5-location-list-screen: backlog
+  3-6-create-edit-location-form: backlog
+  3-7-location-map-pin-selection: backlog
+  3-8-location-map-overview: backlog
+  3-9-delete-location-with-confirmation: backlog
+  epic-3-retrospective: optional
+
+  # Epic 4: Hive Management
+  epic-4: backlog
+  4-1-hive-domain-model: backlog
+  4-2-hive-local-data-source: backlog
+  4-3-hive-repository-implementation: backlog
+  4-4-hive-bloc-state-management: backlog
+  4-5-hive-list-screen: backlog
+  4-6-create-edit-hive-form: backlog
+  4-7-hive-detail-screen: backlog
+  4-8-hive-history-view: backlog
+  4-9-delete-hive-with-confirmation: backlog
+  epic-4-retrospective: optional
+
+  # Epic 5: Inspection Logging (Core Experience)
+  epic-5: backlog
+  5-1-inspection-domain-model: backlog
+  5-2-inspection-local-data-source: backlog
+  5-3-inspection-repository-implementation: backlog
+  5-4-photo-capture-queue-service: backlog
+  5-5-inspection-bloc-state-management: backlog
+  5-6-quick-inspection-screen-core-observations: backlog
+  5-7-quick-inspection-screen-extended-observations: backlog
+  5-8-inspection-notes-photos: backlog
+  5-9-inspection-detail-view: backlog
+  5-10-background-sync-service: backlog
+  epic-5-retrospective: optional
+
+  # Epic 6: Task Management
+  epic-6: backlog
+  6-1-task-domain-model: backlog
+  6-2-task-local-data-source: backlog
+  6-3-task-repository-implementation: backlog
+  6-4-task-auto-generation-service: backlog
+  6-5-task-bloc-state-management: backlog
+  6-6-task-list-screen: backlog
+  6-7-create-edit-task-form: backlog
+  6-8-task-detail-completion: backlog
+  6-9-task-quick-actions: backlog
+  epic-6-retrospective: optional
+
+  # Epic 7: Dashboard & Overview
+  epic-7: backlog
+  7-1-dashboard-domain-services: backlog
+  7-2-dashboard-bloc-state-management: backlog
+  7-3-dashboard-task-hero-section: backlog
+  7-4-dashboard-hive-overview-section: backlog
+  7-5-dashboard-location-filter: backlog
+  7-6-sync-status-indicator: backlog
+  7-7-dashboard-pull-to-refresh: backlog
+  epic-7-retrospective: optional
+
+  # Epic 8: Notifications
+  epic-8: backlog
+  8-1-notification-domain-model: backlog
+  8-2-push-notification-service: backlog
+  8-3-task-reminder-notifications: backlog
+  8-4-sync-error-notifications: backlog
+  8-5-notification-settings-screen: backlog
+  8-6-notification-permission-handling: backlog
+  epic-8-retrospective: optional

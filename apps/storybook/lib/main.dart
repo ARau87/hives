@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:storybook/main.directories.g.dart';
 import 'package:ui/ui.dart';
 import 'package:widgetbook/widgetbook.dart';
 import 'package:widgetbook_annotation/widgetbook_annotation.dart' as widgetbook;
-
-import 'main.directories.g.dart';
 
 void main() {
   runApp(const HivesWidgetbook());

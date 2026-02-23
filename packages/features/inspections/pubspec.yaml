@@ -1,0 +1,15 @@
+name: inspections
+description: "Inspection logging feature - bounded context for quick inspection workflow."
+version: 0.0.1
+environment:
+  sdk: ^3.10.3
+resolution: workspace
+
+dependencies:
+  flutter:
+    sdk: flutter
+  shared:
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter

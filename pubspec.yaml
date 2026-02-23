@@ -8,10 +8,24 @@ environment:
 
 dev_dependencies:
   melos: ^7.3.0
+  flutter_lints: ^6.0.0  # Required for root analysis_options.yaml
 
 workspace:
-  - packages/shared
-  - packages/ui
+  # Core packages (shared infrastructure)
+  - packages/shared                        # core_domain equivalent - DDD base classes
+  - packages/ui                            # core_ui equivalent - design system
+  - packages/core/core_data                # Database, API client, sync infrastructure
+  - packages/core/core_infrastructure      # Event bus, DI, navigation
+
+  # Feature packages (bounded contexts)
+  - packages/features/authentication
+  - packages/features/locations
+  - packages/features/hives
+  - packages/features/inspections
+  - packages/features/tasks
+  - packages/features/dashboard
+
+  # Application packages
   - apps/mobile
   - apps/storybook
 
@@ -54,15 +68,17 @@ melos:
       description: Check if all Dart files are formatted
 
     test:
-      run: melos exec --fail-fast -- "dart test"
-      description: Run tests in all packages
+      run: melos exec --fail-fast -- "flutter test --no-pub"
+      description: Run tests in all packages that have test files
       select-package:
+        flutter: true
         dir-exists: test
 
     test:coverage:
-      run: melos exec --fail-fast -- "dart test --coverage=coverage"
-      description: Run tests with coverage in all packages
+      run: melos exec --fail-fast -- "flutter test --no-pub --coverage"
+      description: Run tests with coverage in all packages that have test files
       select-package:
+        flutter: true
         dir-exists: test
 
     get:
@@ -79,7 +95,7 @@ melos:
 
     build:
       exec: |
-        dart pub run build_runner build
+        dart run build_runner build --delete-conflicting-outputs
       description: Run build_runner in all packages with build_runner dev dependency
       packageFilters:
         dependsOn: build_runner

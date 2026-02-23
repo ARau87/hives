@@ -1,4 +1,4 @@
-import 'domain_event.dart';
+import 'package:shared/domain/domain_event.dart';
 
 /// Base class for all aggregate roots in the domain model.
 ///

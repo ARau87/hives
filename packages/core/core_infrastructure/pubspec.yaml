@@ -1,0 +1,12 @@
+name: core_infrastructure
+description: "Core infrastructure - event bus, dependency injection, navigation service."
+version: 0.0.1
+environment:
+  sdk: ^3.10.3
+resolution: workspace
+
+dependencies:
+  shared:
+
+dev_dependencies:
+  test: ^1.25.0

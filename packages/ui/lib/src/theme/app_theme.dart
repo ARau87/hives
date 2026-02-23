@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-
-import 'button_theme.dart';
-import 'hives_colors.dart';
-import 'hives_spacings.dart';
-import 'input_theme.dart';
-import 'surface_theme.dart';
+import 'package:ui/src/theme/button_theme.dart';
+import 'package:ui/src/theme/hives_colors.dart';
+import 'package:ui/src/theme/hives_spacings.dart';
+import 'package:ui/src/theme/input_theme.dart';
+import 'package:ui/src/theme/surface_theme.dart';
 
 /// Hives App Theme Configuration
 class AppTheme {

@@ -1,0 +1,12 @@
+name: core_data
+description: "Core data layer - database, API client, sync queue, and data infrastructure."
+version: 0.0.1
+environment:
+  sdk: ^3.10.3
+resolution: workspace
+
+dependencies:
+  shared:
+
+dev_dependencies:
+  test: ^1.25.0

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-
-import '../../theme/button_theme.dart';
-import '../../theme/hives_colors.dart';
+import 'package:ui/src/theme/button_theme.dart';
+import 'package:ui/src/theme/hives_colors.dart';
 
 /// A prominent call-to-action button with gradient background using FilledButton.
 ///

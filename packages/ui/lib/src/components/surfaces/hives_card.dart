@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-
-import '../../theme/surface_theme.dart';
+import 'package:ui/src/theme/surface_theme.dart';
 
 /// A Material Design card component with customizable elevation and styling.
 ///
