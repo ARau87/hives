@@ -129,7 +129,7 @@ melos_*.yaml
 _bmad/
 
 # Build outputs
-/build/
+build/
 
 # vm.json files
 *vm.json
