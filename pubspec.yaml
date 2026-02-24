@@ -70,16 +70,16 @@ melos:
     test:
       run: melos exec --fail-fast -- "flutter test --no-pub"
       description: Run tests in all packages that have test files
-      select-package:
+      packageFilters:
         flutter: true
-        dir-exists: test
+        dirExists: test
 
     test:coverage:
       run: melos exec --fail-fast -- "flutter test --no-pub --coverage"
       description: Run tests with coverage in all packages that have test files
-      select-package:
+      packageFilters:
         flutter: true
-        dir-exists: test
+        dirExists: test
 
     get:
       run: melos exec -- "dart pub get"
