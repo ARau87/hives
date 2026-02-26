@@ -199,14 +199,14 @@ The inspection flow must be: Tap hive → Log observations → Done. No loading 
 
 **Material Design 3 with Custom Theming**
 
-Flutter's native Material 3 implementation with heavy customization to create a unique, modern brand identity.
+Flutter's native Material 3 implementation with extensive customization for a modern, friendly brand identity. The design system emphasizes generous corner radii, subtle shadows, and the Poppins typeface throughout.
 
 ### Rationale for Selection
 
 | Factor | Decision Driver |
 |--------|-----------------|
 | Development Speed | M3 built into Flutter - no additional dependencies |
-| Modern Aesthetic | Latest Material iteration matches inspiration apps (ING, Padelcity) |
+| Modern Aesthetic | Custom M3 styling matches inspiration apps (ING, Padelcity) |
 | Cross-Platform | Consistent look on iOS and Android |
 | Accessibility | WCAG compliance built-in (large touch targets, contrast ratios) |
 | Field Conditions | Supports high contrast, large tap targets for glove use |
@@ -215,33 +215,39 @@ Flutter's native Material 3 implementation with heavy customization to create a 
 ### Implementation Approach
 
 - Use Flutter's `ThemeData` with Material 3 (`useMaterial3: true`)
-- Define custom `ColorScheme` for brand colors
-- Configure custom `TextTheme` for optimal field readability
-- Set component themes (buttons, cards, inputs) for rounded, friendly aesthetic
-- Implement dynamic theming for potential dark mode
+- Define custom `ColorScheme` with warm amber primary
+- Configure custom `TextTheme` using **Poppins** font family
+- Override component themes for extra-rounded corners (14-20px vs M3 default 12px)
+- Implement subtle shadow system with colored glows on primary actions
+- Support future dark mode with semantic color tokens
 
-### Customization Strategy
+### Component Shape Language
 
-**Colors:**
-- Primary: Warm, natural palette (honey/amber tones for beekeeping context)
-- Status colors: Green (healthy), Yellow (attention), Red (urgent)
-- High contrast for outdoor visibility
+| Component | Corner Radius | Notes |
+|-----------|---------------|-------|
+| Buttons | 14px | Pill-like, friendly feel |
+| Cards | 18-20px | Extra rounded, modern aesthetic |
+| Inputs | 12px | Slightly less rounded for form context |
+| Badges | 10px | Compact pill shape |
+| Bottom Nav | 0px (top) | Clean edge against screen bottom |
 
-**Typography:**
-- Clean sans-serif for readability in sunlight
-- Larger base sizes for field use
-- Bold weights for status indicators
+### Shadow System
 
-**Components:**
-- Rounded corners (friendly, modern)
-- Generous padding (glove-friendly taps)
-- Card-based layouts (kanban-inspired)
-- Custom icons for beekeeping domain (hive, queen, brood, etc.)
+Modern, subtle shadows that provide depth without heaviness:
 
-**Motion:**
-- Subtle, purposeful animations (Padelcity-inspired)
-- Quick transitions (speed principle)
-- Haptic feedback on key actions
+| Component | Shadow | Purpose |
+|-----------|--------|---------|
+| Cards | `0 3px 12px rgba(0,0,0,0.05)` | Gentle lift |
+| Elevated Cards | Dual: `0 4px 16px 6%` + `0 1px 4px 4%` | Layered depth |
+| Primary Button | `0 4px 12px rgba(primary,0.25)` | Colored glow, draws attention |
+| Bottom Nav | `0 -2px 12px rgba(0,0,0,0.08)` | Upward shadow, anchors UI |
+
+### Motion & Feedback
+
+- **Transitions:** Quick, purposeful (200-300ms)
+- **Haptics:** Light impact on button press, success on save
+- **Micro-animations:** Subtle scale on tap (0.98), smooth color transitions
+- **Loading:** Skeleton screens, never spinners (speed perception)
 
 ## Defining Experience
 
@@ -326,40 +332,299 @@ This is what users will tell other beekeepers. This is the interaction that, if 
 ### Color System
 
 **Brand Palette:**
-- Primary: Warm Amber `#F59E0B` - Actions, brand identity
-- Primary Dark: Deep Honey `#D97706` - Headers, emphasis
-- Secondary: Soft Brown `#78716C` - Secondary elements
-- Background: Warm White `#FFFBEB` - Main background
-- Surface: Cream `#FEF3C7` - Cards, elevated surfaces
-- On Surface: Dark Brown `#292524` - Primary text
+- Primary: Golden Amber `#F59E0A` - Primary actions, brand identity
+- Primary Dark: Deep Amber `#D97706` - Headers, pressed states
+- Surface: Pure White `#FFFFFF` - Cards, elevated surfaces
+- Background: Warm White `#FAFAFA` - Main background
+- On Surface: Warm Black `#1F1A17` - Primary text
+- On Surface Variant: Warm Gray `#B3ADA8` - Placeholder text, hints
+- Outline: Light Cream `#EDE8E3` - Borders, dividers
 
 **Status Colors:**
-- Healthy: Forest Green `#16A34A`
-- Attention: Amber `#F59E0B`
-- Urgent: Warm Red `#DC2626`
-- Unknown: Slate `#64748B`
+- Healthy: Vibrant Green `#21C45E` - Thriving hives, success states
+- Attention: Warm Yellow `#FFB821` - Needs checking, warnings
+- Urgent: Alert Red `#F04545` - Immediate action needed
+- Unknown: Cool Gray `#8C94A1` - Unconfirmed status
+
+**Status Color Application:**
+- **Hive Cards:** 4px vertical status bar on left edge
+- **Badges:** Solid fill with white text
+- **Icons:** Filled status color with white icon
 
 ### Typography System
 
-- **Fonts:** Platform defaults (SF Pro / Roboto) for optimal performance
-- **Base Size:** 16px (larger for field readability)
-- **Scale:** H1 32px → H2 24px → H3 20px → Body 16px → Caption 14px
-- **Weights:** Bold for titles, SemiBold for actions, Regular for body
+**Font Family:** Poppins (Google Fonts)
+- Modern geometric sans-serif
+- Excellent readability in outdoor conditions
+- Friendly, approachable character
+
+**Type Scale:**
+
+| Role | Size | Weight | Use Case |
+|------|------|--------|----------|
+| Display | 28px | SemiBold | Dashboard hero numbers |
+| Title Large | 20px | SemiBold | Screen titles |
+| Title Medium | 17px | SemiBold | Card titles, section headers |
+| Body Large | 16px | Regular | Primary content |
+| Body Medium | 15px | Regular | Buttons, inputs |
+| Label | 13px | Medium | Badges, captions |
+| Caption | 12px | Regular | Timestamps, hints |
+
+**Letter Spacing:**
+- Buttons: +0.3px (slightly expanded for readability)
+- Body: 0px (default)
+- Captions: +0.2px
 
 ### Spacing & Layout Foundation
 
-- **Grid:** 8px base unit
-- **Touch Targets:** 48px minimum (glove-friendly)
-- **Padding:** 16px card padding, 16px screen margins
-- **Gaps:** 12px between items, 24px between sections
-- **Feel:** Spacious but efficient
+**Base Unit:** 4px (allows finer control than 8px)
+
+**Component Spacing:**
+
+| Context | Value | Use |
+|---------|-------|-----|
+| Card Padding | 18-20px | Internal card content |
+| Button Padding | 0 × 28px | Horizontal button padding |
+| Item Spacing | 10-14px | Between list items |
+| Section Gap | 24px | Between content sections |
+| Screen Margin | 16px | Edge padding |
+
+**Touch Targets:**
+- Minimum: 48px (exceeds 44px accessibility standard)
+- Buttons: 52px height (comfortable for gloved hands)
+- Cards: Full width tap targets
+
+### Button Variants
+
+| Type | Fill | Border | Shadow | Use |
+|------|------|--------|--------|-----|
+| Primary | `#F59E0A` | None | Colored glow | Main actions |
+| Secondary | White | 1.5px `#EDE8E3` | None | Secondary actions |
+| Ghost | Transparent | None | None | Tertiary, cancel |
+
+### Card Components
+
+The card system provides three layout variants for both Hive and Task cards, allowing flexible use across different contexts.
+
+#### Card Layout Overview
+
+| Layout | Height | Use Case |
+|--------|--------|----------|
+| **Image** | 200-220px | Dashboard hero cards, detail views |
+| **Simple** | 110-120px | Lists without photos, medium density |
+| **Compact** | 80-90px | High-density lists, task lists |
+
+---
+
+#### Hive Card Image
+
+Inspired by modern booking card patterns. Large photo area with minimal text below.
+
+```
+┌─────────────────────────────┐
+│ ┌─────────────────────────┐ │
+│ │                         │ │  ← 130px image area
+│ │      [HIVE PHOTO]       │ │    Rounded top corners
+│ │                         │ │
+│ └─────────────────────────┘ │
+│ ● Hive Name            ✓   │  ← Status dot + badge
+│   Queenright • Brood good  │  ← Status summary
+│   3 days ago               │  ← Timestamp
+└─────────────────────────────┘
+```
+
+**Specifications:**
+
+| Property | Value |
+|----------|-------|
+| Size | 329 × 220px |
+| Corner Radius | 18px |
+| Image Area | 130px height |
+| Shadow | `0 3px 12px rgba(0,0,0,0.05)` |
+| Variants | 8 (4 statuses × Photo true/false) |
+
+**Photo=false Fallback:**
+- Warm gradient background (`#FEF3C7` → `#FDE68A`)
+- "📷 Tap to add photo" hint centered
+
+---
+
+#### Hive Card Simple
+
+No photo area. Colored accent bar at top indicates status. Same content layout as Image variant.
+
+```
+┌─────────────────────────────┐
+│▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀│  ← 4px colored accent bar
+│ ● Hive Name            ✓   │  ← Status dot + badge
+│   Queenright • Brood good  │  ← Status summary
+│   Last inspected 3 days ago│  ← Timestamp
+└─────────────────────────────┘
+```
+
+**Specifications:**
+
+| Property | Value |
+|----------|-------|
+| Size | 329 × 120px |
+| Corner Radius | 18px |
+| Accent Bar | 4px height, status color |
+| Variants | 4 (Healthy, Attention, Urgent, Unknown) |
+
+---
+
+#### Hive Card Compact
+
+Horizontal layout for dense lists. Status bar on left edge.
+
+```
+┌─────────────────────────────────────┐
+│▌● Hive Name                    ✓   │  ← 4px status bar (left)
+│▌  Queenright • Brood good          │
+│▌  3 days ago                       │
+└─────────────────────────────────────┘
+```
+
+**Specifications:**
+
+| Property | Value |
+|----------|-------|
+| Size | 320 × 88px |
+| Corner Radius | 14px |
+| Status Bar | 4px width, left edge |
+| Variants | 4 (Healthy, Attention, Urgent, Unknown) |
+
+---
+
+#### Hive Card Skeleton
+
+Loading state with shimmer animation placeholders.
+
+```
+┌─────────────────────────────┐
+│ ░░░░░░░░░░░░░░░░░░░░░░░░░░ │  ← Gray shimmer (#EDEDED)
+│ ░░░░░░░░░░░░░░░░░░░░░░░░░░ │    1.5s animation loop
+│ ░░░░░░░░░░░░░░░░░░░░░░░░░░ │
+│ ░░░░░░░░░░░░░░             │
+│ ░░░░░░░░░░░░░░░░░░         │
+│ ░░░░░░░░░░                 │
+└─────────────────────────────┘
+```
+
+---
+
+#### Task Card Image
+
+Photo at top showing associated hive. Priority indicator with due date.
+
+```
+┌─────────────────────────────┐
+│ ┌─────────────────────────┐ │
+│ │     [HIVE PHOTO]        │ │  ← 110px image area
+│ └─────────────────────────┘ │
+│ ● Feed Hive                │  ← Priority dot + task title
+│   Hive: Sunny              │  ← Associated hive
+│   Due today                │  ← Due date (priority color)
+└─────────────────────────────┘
+```
+
+**Specifications:**
+
+| Property | Value |
+|----------|-------|
+| Size | 329 × 200px |
+| Corner Radius | 18px |
+| Image Area | 110px height |
+| Variants | 6 (3 priorities × Photo true/false) |
+
+---
+
+#### Task Card Simple
+
+No photo area. Colored accent bar at top. Checkbox for completion.
+
+```
+┌─────────────────────────────┐
+│▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀│  ← 4px colored accent bar
+│ ● Feed Hive            ☐   │  ← Priority dot + checkbox
+│   Hive: Sunny              │  ← Associated hive
+│   Due today                │  ← Due date (priority color)
+└─────────────────────────────┘
+```
+
+**Specifications:**
+
+| Property | Value |
+|----------|-------|
+| Size | 329 × 110px |
+| Corner Radius | 18px |
+| Accent Bar | 4px height, priority color |
+| Checkbox | 22 × 22px, 6px radius |
+| Variants | 3 (High, Normal, Low) |
+
+---
+
+#### Task Card Compact
+
+Horizontal layout for task lists. Priority bar on left, checkbox on right.
+
+```
+┌─────────────────────────────────────┐
+│▌● Feed Hive                    ☐   │  ← Priority bar (left)
+│▌  Hive: Sunny                      │    Checkbox (right)
+│▌  Due today                        │
+└─────────────────────────────────────┘
+```
+
+**Specifications:**
+
+| Property | Value |
+|----------|-------|
+| Size | 320 × 80px |
+| Corner Radius | 14px |
+| Priority Bar | 4px width, left edge |
+| Checkbox | 22 × 22px |
+| Variants | 3 (High, Normal, Low) |
+
+---
+
+#### Status & Priority Colors
+
+**Hive Status:**
+| Status | Color | Hex | Badge |
+|--------|-------|-----|-------|
+| Healthy | Green | `#21C45E` | ✓ |
+| Attention | Amber | `#FFB821` | ! |
+| Urgent | Red | `#F04545` | !! |
+| Unknown | Gray | `#8C94A1` | ? |
+
+**Task Priority:**
+| Priority | Color | Hex | Due Label |
+|----------|-------|-----|-----------|
+| High | Red | `#F04545` | Due today |
+| Normal | Amber | `#FFB821` | Due in X days |
+| Low | Gray | `#8C94A1` | No due date |
+
+---
+
+#### Card Selection Guidelines
+
+| Context | Recommended Card |
+|---------|------------------|
+| Dashboard (few items) | Image or Simple |
+| Dashboard (many items) | Simple or Compact |
+| Detail/Edit screens | Image |
+| Task lists | Simple or Compact |
+| Location hive lists | Compact |
+| Search results | Compact |
 
 ### Accessibility Considerations
 
-- All text: WCAG AA contrast (4.5:1+)
+- All text: WCAG AA contrast (4.5:1+) - verified with warm black on white
 - Status: Icons accompany colors (not color-only)
-- Touch: 48px targets exceed 44px accessibility minimum
-- Outdoor: Larger fonts, high contrast for bright conditions
+- Touch: 48-52px targets exceed accessibility minimum
+- Outdoor: Poppins SemiBold + high contrast for bright conditions
+- Color blindness: Status uses position (left bar) + icon, not just color
 
 ## Design Direction Decision
 
