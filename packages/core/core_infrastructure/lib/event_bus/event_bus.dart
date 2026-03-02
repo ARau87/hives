@@ -32,6 +32,11 @@ import 'package:shared/shared.dart';
 /// // Later...
 /// subscription.cancel();
 /// ```
+/// Note: EventBus uses both a manual singleton pattern (factory constructor)
+/// and Injectable's @singleton annotation. The factory constructor ensures
+/// `EventBus()` always returns the same instance, while @singleton registers
+/// it in GetIt. Both patterns are intentional — the factory guarantees
+/// singleton behavior even outside DI, and @singleton enables DI discovery.
 @singleton
 class EventBus {
   /// Returns the singleton instance of EventBus.

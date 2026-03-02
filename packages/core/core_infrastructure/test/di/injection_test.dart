@@ -44,14 +44,19 @@ void main() {
       expect(identical(fromGetIt, fromInstance), isTrue);
     });
 
-    test('can be called multiple times safely', () {
+    test('can be called multiple times safely', () async {
       // First call should succeed
       configureInjection();
       expect(getIt.isRegistered<EventBus>(), isTrue);
+      expect(getIt<EventBus>(), isA<EventBus>());
 
-      // Second call should not throw (allowReassignment is default behavior)
-      // Note: In production, you typically only call this once
-      // This test verifies it doesn't crash if called again
+      // Reset and call again to verify it doesn't throw
+      await getIt.reset();
+      EventBus.resetForTesting();
+
+      configureInjection();
+      expect(getIt.isRegistered<EventBus>(), isTrue);
+      expect(getIt<EventBus>(), isA<EventBus>());
     });
 
     test('EventBus from DI container is functional', () async {

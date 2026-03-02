@@ -7,6 +7,19 @@ resolution: workspace
 
 dependencies:
   shared:
+  flutter:
+    sdk: flutter
+  drift: ^2.22.1
+  drift_flutter: ^0.2.4
+  sqlcipher_flutter_libs: ^0.6.8
+  flutter_secure_storage: ^9.2.4
+  connectivity_plus: ^6.1.3
+  path_provider: ^2.1.5
+  fpdart: ^1.2.0
 
 dev_dependencies:
   test: ^1.25.0
+  flutter_test:
+    sdk: flutter
+  drift_dev: ^2.22.1
+  build_runner: ^2.4.15

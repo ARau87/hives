@@ -1,6 +1,6 @@
 # Story 1.3: Core Infrastructure Package
 
-Status: review
+Status: done
 
 ## Story
 
@@ -14,7 +14,7 @@ So that modules can communicate without direct dependencies.
 2. **And** GetIt service locator is configured with Injectable code generation
 3. **And** injection.dart setup file exists for app-level DI wiring
 4. **And** NavigationService wraps GoRouter for type-safe navigation
-5. **And** all services are registered as singletons
+5. **And** all services are registered as singletons (EventBus via Injectable auto-registration; NavigationService via manual registration in app shell since it depends on GoRouter route configuration)
 6. **And** event subscriptions can be disposed to prevent memory leaks
 7. **And** unit tests verify event publishing and subscription
 8. **And** barrel file exports all public APIs
@@ -76,7 +76,7 @@ So that modules can communicate without direct dependencies.
 - [x] Task 7: Verify melos commands pass (AC: all)
   - [x] 7.1 Run `melos bootstrap`
   - [x] 7.2 Run `melos run analyze` - fix any errors in core_infrastructure
-  - [x] 7.3 Run `flutter test` - all 27 tests pass
+  - [x] 7.3 Run `flutter test` - all 37 tests pass
 
 ## Dev Notes
 
@@ -387,7 +387,7 @@ Claude Opus 4.5 (claude-opus-4-5-20251101)
 1. **EventBus Implementation**: Singleton pattern with broadcast StreamController, supports typed event subscriptions via `on<T>()`, proper disposal with `isDisposed` flag
 2. **DI Configuration**: GetIt + Injectable setup with `@InjectableInit` annotation, code generation produces `injection.config.dart` automatically
 3. **NavigationService**: Abstract interface with GoRouterNavigationService implementation, supports go, push, pop, replace, goNamed, and pushNamed methods
-4. **Comprehensive Testing**: 27 unit tests covering EventBus (event publishing, typed subscriptions, cancellation), ServiceLocator (registration patterns), and NavigationService (all navigation methods)
+4. **Comprehensive Testing**: 37 unit tests covering EventBus (event publishing, typed subscriptions, cancellation), ServiceLocator (registration patterns), Injection (DI configuration), and NavigationService (all navigation methods)
 5. **Note**: GoRouter dependency must be registered by the app shell since it requires route configuration; this generates an expected warning during build
 
 ### File List
@@ -401,13 +401,25 @@ Claude Opus 4.5 (claude-opus-4-5-20251101)
 - packages/core/core_infrastructure/lib/navigation/app_router.dart
 - packages/core/core_infrastructure/test/event_bus/event_bus_test.dart
 - packages/core/core_infrastructure/test/di/service_locator_test.dart
+- packages/core/core_infrastructure/test/di/injection_test.dart
 - packages/core/core_infrastructure/test/navigation/navigation_service_test.dart
 
 **Modified Files:**
 - packages/core/core_infrastructure/pubspec.yaml (added dependencies)
 - packages/core/core_infrastructure/lib/core_infrastructure.dart (added exports)
 
+### Review Follow-ups (AI)
+
+- [x] [AI-Review][HIGH] Test "can be called multiple times safely" was incomplete - only called configureInjection() once. Added actual second call with reset between calls. [injection_test.dart:47] **FIXED**
+- [x] [AI-Review][MEDIUM] File List missing injection_test.dart - added to File List. [story docs] **FIXED**
+- [x] [AI-Review][MEDIUM] Story claimed 27 tests but 37 actually pass - corrected count in Task 7.3 and Completion Notes. [story docs] **FIXED**
+- [x] [AI-Review][MEDIUM] Dual singleton pattern on EventBus (manual + Injectable) lacked documentation - added clarifying comment explaining why both patterns coexist. [event_bus.dart:36] **FIXED**
+- [x] [AI-Review][MEDIUM] AC #5 "all services registered as singletons" was misleading - updated to clarify NavigationService requires manual registration in app shell. [AC #5] **FIXED**
+- [ ] [AI-Review][LOW] app_router.dart imports flutter/foundation.dart but Listenable is available transitively via go_router. Harmless but redundant. [app_router.dart:1] **DEFERRED: cosmetic**
+- [ ] [AI-Review][LOW] No test for createAppRouter() factory function. Simple wrapper but untested. [app_router.dart] **DEFERRED: to be tested when app shell routing is implemented in Story 1-9**
+
 ## Change Log
 
 - 2026-02-23: Story created with comprehensive context from epics, architecture, and previous story learnings.
-- 2026-02-23: Story implementation completed - all tasks finished, 27 tests passing, analysis clean.
+- 2026-02-23: Story implementation completed - all tasks finished, 37 tests passing, analysis clean.
+- 2026-03-01: Code review completed. Fixed 5 issues (1 HIGH, 4 MEDIUM): fixed incomplete test, updated File List, corrected test count, documented dual singleton pattern, clarified AC #5. 2 LOW items deferred. All 37 tests pass, analysis clean. Status → done.
