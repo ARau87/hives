@@ -8,7 +8,7 @@ documentCounts:
   projectDocs: 0
 classification:
   projectType: mobile_app
-  platform: Flutterc
+  platform: Flutter
   domain: agriculture_apiary
   complexity: medium
   projectContext: greenfield
