@@ -46,7 +46,7 @@ class SurfaceThemeTokens extends ThemeExtension<SurfaceThemeTokens> {
   factory SurfaceThemeTokens.standard() {
     return const SurfaceThemeTokens(
       cardPadding: 16.0,
-      cardBorderRadius: 12.0,
+      cardBorderRadius: 24.0,
       cardElevation: 2.0,
       cardElevationHovered: 8.0,
       shadowBlurRadius: 8.0,

@@ -46,8 +46,8 @@ development_status:
   1-2-core-domain-package: done
   1-3-core-infrastructure-package: done
   1-4-core-data-package-database-foundation: done
-  1-5-core-ui-package-design-tokens: backlog
-  1-6-core-ui-package-base-widgets: backlog
+  1-5-core-ui-package-design-tokens: done
+  1-6-core-ui-package-base-widgets: done
   1-7-core-ui-package-status-feedback-widgets: backlog
   1-8-widgetbook-documentation: backlog
   1-9-app-shell-with-navigation: backlog

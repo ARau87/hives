@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ui/src/theme/app_spacing.dart';
 
 /// Secondary action button with outlined style.
 ///
@@ -55,14 +56,14 @@ class SecondaryButton extends StatelessWidget {
     final theme = Theme.of(context);
 
     final baseStyle = OutlinedButton.styleFrom(
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+      shape: const RoundedRectangleBorder(borderRadius: AppSpacing.buttonRadius),
       side: BorderSide(
         color: isEnabled
             ? theme.colorScheme.primary
             : theme.colorScheme.outlineVariant,
         width: 2,
       ),
-      minimumSize: const Size(64, 48),
+      minimumSize: const Size(64, AppSpacing.buttonHeight),
     );
 
     final button = OutlinedButton.icon(

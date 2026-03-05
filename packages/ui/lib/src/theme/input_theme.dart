@@ -51,7 +51,7 @@ class InputThemeTokens extends ThemeExtension<InputThemeTokens> {
     return const InputThemeTokens(
       paddingHorizontal: 16.0,
       paddingVertical: 12.0,
-      borderRadius: 12.0,
+      borderRadius: 14.0,
       borderWidth: 1.5,
       focusedBorderWidth: 2.5,
       minHeight: 48.0,

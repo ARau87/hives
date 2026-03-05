@@ -6,8 +6,13 @@ export 'src/components/feedback/feedback.dart';
 export 'src/components/inputs/inputs.dart';
 export 'src/components/surfaces/surfaces.dart';
 export 'src/components/typography/typography.dart';
+// Extensions
+export 'src/extensions/context_extensions.dart';
 // Themes
+export 'src/theme/app_colors.dart';
+export 'src/theme/app_spacing.dart';
 export 'src/theme/app_theme.dart';
+export 'src/theme/app_typography.dart';
 export 'src/theme/button_theme.dart';
 export 'src/theme/hives_colors.dart';
 export 'src/theme/hives_spacings.dart';

@@ -1,20 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:ui/src/theme/app_colors.dart';
 
-/// Extension class for custom color definitions in the Hives app
+/// Extension class for custom color definitions in the Hives app.
+///
+/// Uses [AppColors] as the source of truth for all color values.
+/// Access via [Theme.of(context).extension<HivesColors>()] or
+/// the convenience extension [HivesColorsExtension] on [ThemeData].
 class HivesColors extends ThemeExtension<HivesColors> {
   final Color honey; // Primary amber color
   final Color honeyLight;
   final Color honeyDark;
 
-  final Color hiveWood; // Secondary brown color
-  final Color hiveWoodLight;
-  final Color hiveWoodDark;
+  final Color secondary; // Secondary purple color
+  final Color secondaryLight;
 
-  final Color nature; // Tertiary green color
+  final Color nature; // Status healthy green
   final Color natureLightShade;
   final Color natureDarkShade;
 
-  final Color orange; // Additional orange color for future use
+  final Color orange; // Accent orange
   final Color orangeLight;
   final Color orangeDark;
 
@@ -23,28 +27,40 @@ class HivesColors extends ThemeExtension<HivesColors> {
   final Color outline;
   final Color outlineVariant;
 
+  // Status colors
+  final Color healthyStatus;
+  final Color healthyFill;
+  final Color attentionStatus;
+  final Color attentionFill;
+  final Color urgentStatus;
+  final Color urgentFill;
+  final Color unknownStatus;
+  final Color unknownFill;
+
   const HivesColors({
-    // Honey (Amber) colors
     required this.honey,
     required this.honeyLight,
     required this.honeyDark,
-    // Hive Wood (Brown) colors
-    required this.hiveWood,
-    required this.hiveWoodLight,
-    required this.hiveWoodDark,
-    // Nature (Green) colors
+    required this.secondary,
+    required this.secondaryLight,
     required this.nature,
     required this.natureLightShade,
     required this.natureDarkShade,
-    // Orange colors
     required this.orange,
     required this.orangeLight,
     required this.orangeDark,
-    // Surface colors
     required this.surface,
     required this.surfaceVariant,
     required this.outline,
     required this.outlineVariant,
+    required this.healthyStatus,
+    required this.healthyFill,
+    required this.attentionStatus,
+    required this.attentionFill,
+    required this.urgentStatus,
+    required this.urgentFill,
+    required this.unknownStatus,
+    required this.unknownFill,
   });
 
   @override
@@ -52,9 +68,8 @@ class HivesColors extends ThemeExtension<HivesColors> {
     Color? honey,
     Color? honeyLight,
     Color? honeyDark,
-    Color? hiveWood,
-    Color? hiveWoodLight,
-    Color? hiveWoodDark,
+    Color? secondary,
+    Color? secondaryLight,
     Color? nature,
     Color? natureLightShade,
     Color? natureDarkShade,
@@ -65,14 +80,21 @@ class HivesColors extends ThemeExtension<HivesColors> {
     Color? surfaceVariant,
     Color? outline,
     Color? outlineVariant,
+    Color? healthyStatus,
+    Color? healthyFill,
+    Color? attentionStatus,
+    Color? attentionFill,
+    Color? urgentStatus,
+    Color? urgentFill,
+    Color? unknownStatus,
+    Color? unknownFill,
   }) {
     return HivesColors(
       honey: honey ?? this.honey,
       honeyLight: honeyLight ?? this.honeyLight,
       honeyDark: honeyDark ?? this.honeyDark,
-      hiveWood: hiveWood ?? this.hiveWood,
-      hiveWoodLight: hiveWoodLight ?? this.hiveWoodLight,
-      hiveWoodDark: hiveWoodDark ?? this.hiveWoodDark,
+      secondary: secondary ?? this.secondary,
+      secondaryLight: secondaryLight ?? this.secondaryLight,
       nature: nature ?? this.nature,
       natureLightShade: natureLightShade ?? this.natureLightShade,
       natureDarkShade: natureDarkShade ?? this.natureDarkShade,
@@ -83,6 +105,14 @@ class HivesColors extends ThemeExtension<HivesColors> {
       surfaceVariant: surfaceVariant ?? this.surfaceVariant,
       outline: outline ?? this.outline,
       outlineVariant: outlineVariant ?? this.outlineVariant,
+      healthyStatus: healthyStatus ?? this.healthyStatus,
+      healthyFill: healthyFill ?? this.healthyFill,
+      attentionStatus: attentionStatus ?? this.attentionStatus,
+      attentionFill: attentionFill ?? this.attentionFill,
+      urgentStatus: urgentStatus ?? this.urgentStatus,
+      urgentFill: urgentFill ?? this.urgentFill,
+      unknownStatus: unknownStatus ?? this.unknownStatus,
+      unknownFill: unknownFill ?? this.unknownFill,
     );
   }
 
@@ -95,11 +125,9 @@ class HivesColors extends ThemeExtension<HivesColors> {
       honey: Color.lerp(honey, other.honey, t) ?? honey,
       honeyLight: Color.lerp(honeyLight, other.honeyLight, t) ?? honeyLight,
       honeyDark: Color.lerp(honeyDark, other.honeyDark, t) ?? honeyDark,
-      hiveWood: Color.lerp(hiveWood, other.hiveWood, t) ?? hiveWood,
-      hiveWoodLight:
-          Color.lerp(hiveWoodLight, other.hiveWoodLight, t) ?? hiveWoodLight,
-      hiveWoodDark:
-          Color.lerp(hiveWoodDark, other.hiveWoodDark, t) ?? hiveWoodDark,
+      secondary: Color.lerp(secondary, other.secondary, t) ?? secondary,
+      secondaryLight:
+          Color.lerp(secondaryLight, other.secondaryLight, t) ?? secondaryLight,
       nature: Color.lerp(nature, other.nature, t) ?? nature,
       natureLightShade:
           Color.lerp(natureLightShade, other.natureLightShade, t) ??
@@ -116,61 +144,93 @@ class HivesColors extends ThemeExtension<HivesColors> {
       outline: Color.lerp(outline, other.outline, t) ?? outline,
       outlineVariant:
           Color.lerp(outlineVariant, other.outlineVariant, t) ?? outlineVariant,
+      healthyStatus:
+          Color.lerp(healthyStatus, other.healthyStatus, t) ?? healthyStatus,
+      healthyFill:
+          Color.lerp(healthyFill, other.healthyFill, t) ?? healthyFill,
+      attentionStatus:
+          Color.lerp(attentionStatus, other.attentionStatus, t) ??
+          attentionStatus,
+      attentionFill:
+          Color.lerp(attentionFill, other.attentionFill, t) ?? attentionFill,
+      urgentStatus:
+          Color.lerp(urgentStatus, other.urgentStatus, t) ?? urgentStatus,
+      urgentFill: Color.lerp(urgentFill, other.urgentFill, t) ?? urgentFill,
+      unknownStatus:
+          Color.lerp(unknownStatus, other.unknownStatus, t) ?? unknownStatus,
+      unknownFill:
+          Color.lerp(unknownFill, other.unknownFill, t) ?? unknownFill,
     );
   }
 
-  /// Light theme colors
+  /// Light theme colors aligned to UX specification.
   static const HivesColors light = HivesColors(
-    // Honey colors
-    honey: Color(0xFFFFC107),
-    honeyLight: Color(0xFFFFECB3),
-    honeyDark: Color(0xFFFFB300),
-    // Hive wood colors
-    hiveWood: Color(0xFF795548),
-    hiveWoodLight: Color(0xFFA1887F),
-    hiveWoodDark: Color(0xFF4E342E),
-    // Nature colors
-    nature: Color(0xFF8BC34A),
-    natureLightShade: Color(0xFFC5E1A5),
-    natureDarkShade: Color(0xFF558B2F),
-    // Orange colors
-    orange: Color(0xFFFF9800),
-    orangeLight: Color(0xFFFFCC80),
-    orangeDark: Color(0xFFF57C00),
+    // Honey (Primary Amber) colors
+    honey: AppColors.primary,
+    honeyLight: AppColors.primaryLight,
+    honeyDark: AppColors.primaryDark,
+    // Secondary (Purple) colors
+    secondary: AppColors.secondary,
+    secondaryLight: AppColors.secondaryLight,
+    // Nature (Healthy Green) colors
+    nature: AppColors.healthyStatus,
+    natureLightShade: AppColors.healthyFill,
+    natureDarkShade: Color(0xFF16A34A),
+    // Orange accent colors
+    orange: AppColors.orange,
+    orangeLight: AppColors.orangeLight,
+    orangeDark: Color(0xFFEA580C),
     // Surface colors
-    surface: Color(0xFFFFFBFF),
-    surfaceVariant: Color(0xFFE6E1E5),
-    outline: Color(0xFF79747E),
-    outlineVariant: Color(0xFFCAC4D0),
+    surface: AppColors.surface,
+    surfaceVariant: Color(0xFFF5F5F4),
+    outline: AppColors.outline,
+    outlineVariant: Color(0xFFD6D3D1),
+    // Status colors
+    healthyStatus: AppColors.healthyStatus,
+    healthyFill: AppColors.healthyFill,
+    attentionStatus: AppColors.attentionStatus,
+    attentionFill: AppColors.attentionFill,
+    urgentStatus: AppColors.urgentStatus,
+    urgentFill: AppColors.urgentFill,
+    unknownStatus: AppColors.unknownStatus,
+    unknownFill: AppColors.unknownFill,
   );
 
-  /// Dark theme colors
+  /// Dark theme colors with appropriate dark-mode variants.
   static const HivesColors dark = HivesColors(
-    // Honey colors
-    honey: Color(0xFFFFD54F),
-    honeyLight: Color(0xFFFFF59D),
-    honeyDark: Color(0xFFFFA000),
-    // Hive wood colors
-    hiveWood: Color(0xFFBCAAA4),
-    hiveWoodLight: Color(0xFFD7CCC8),
-    hiveWoodDark: Color(0xFF795548),
-    // Nature colors
-    nature: Color(0xFFAED581),
-    natureLightShade: Color(0xFFDCEDC8),
-    natureDarkShade: Color(0xFF8BC34A),
-    // Orange colors
-    orange: Color(0xFFFFB74D),
-    orangeLight: Color(0xFFFFE0B2),
-    orangeDark: Color(0xFFFF9800),
+    // Honey (Primary Amber) colors — slightly lighter for dark mode
+    honey: Color(0xFFFBBF24),
+    honeyLight: Color(0xFF78350F),
+    honeyDark: Color(0xFFF59E0B),
+    // Secondary (Purple) colors — lighter for dark mode
+    secondary: Color(0xFFA78BFA),
+    secondaryLight: Color(0xFF4C1D95),
+    // Nature (Healthy Green) colors
+    nature: Color(0xFF4ADE80),
+    natureLightShade: Color(0xFF14532D),
+    natureDarkShade: Color(0xFF86EFAC),
+    // Orange accent colors
+    orange: Color(0xFFFB923C),
+    orangeLight: Color(0xFF7C2D12),
+    orangeDark: Color(0xFFFED7AA),
     // Surface colors
-    surface: Color(0xFF1C1B1F),
-    surfaceVariant: Color(0xFF49454F),
-    outline: Color(0xFF938F99),
-    outlineVariant: Color(0xFF49454F),
+    surface: Color(0xFF1C1917),
+    surfaceVariant: Color(0xFF292524),
+    outline: Color(0xFF44403C),
+    outlineVariant: Color(0xFF292524),
+    // Status colors — slightly lighter/vibrant for dark mode
+    healthyStatus: Color(0xFF4ADE80),
+    healthyFill: Color(0xFF14532D),
+    attentionStatus: Color(0xFFFBBF24),
+    attentionFill: Color(0xFF78350F),
+    urgentStatus: Color(0xFFF87171),
+    urgentFill: Color(0xFF7F1D1D),
+    unknownStatus: Color(0xFFCBD5E1),
+    unknownFill: Color(0xFF1E293B),
   );
 }
 
-/// Extension method to easily access HivesColors from ThemeData
+/// Extension method to easily access HivesColors from ThemeData.
 extension HivesColorsExtension on ThemeData {
   HivesColors get hivesColors => extension<HivesColors>() ?? HivesColors.light;
 }
