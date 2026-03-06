@@ -9,6 +9,7 @@ dependencies:
   flutter:
     sdk: flutter
   shared: 0.0.1
+  fpdart: ^1.2.0
 
 dev_dependencies:
   flutter_test:

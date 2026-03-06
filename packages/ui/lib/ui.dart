@@ -1,6 +1,7 @@
 library ui;
 
 // Components
+export 'src/components/auth/auth.dart';
 export 'src/components/buttons/buttons.dart';
 export 'src/components/feedback/feedback.dart';
 export 'src/components/inputs/inputs.dart';

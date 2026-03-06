@@ -401,6 +401,103 @@ So that I can navigate between main sections.
 
 ---
 
+### Story 1.10: Auth UI Components
+
+As a developer,
+I want a set of authentication-specific UI components in the widget library,
+So that Epic 2 auth screens can be built with consistent, design-reviewed building blocks.
+
+**Acceptance Criteria:**
+
+**Given** the core_ui package exists with design tokens and base widgets
+**When** the auth UI components are implemented
+**Then** `HivesAuthHeader` displays a 72px bee icon, Poppins Bold 28px wordmark, and a contextual tagline in variants: `signIn`, `signUp`, `forgotPassword`
+**And** `HivesDividerWithLabel` renders two `#E7E5E4` hairline rules flanking a centered 13px SemiBold `#A8A29E` label with 24px vertical padding
+**And** `HivesPasswordStrengthIndicator` accepts a `String password` and shows 4 animated rule rows (8+ chars, uppercase, lowercase, digit) — gray → green on fulfillment, 200ms color transition
+**And** `HivesOTPField` renders 6 × 52px cells (12px radius, 10px gap), amber border on active cell, auto-advances focus, supports paste, triggers `onComplete` callback when all 6 digits filled, shows shake + red border on `hasError`
+**And** all components are exported via `package:ui/ui.dart`
+**And** each component has a Widgetbook story documenting all variants and states
+**And** `dart analyze` passes with zero issues and all widget tests pass
+
+---
+
+### Story 1.11: Feedback & Confirmation Components
+
+As a developer,
+I want empty state and destructive confirmation components in the widget library,
+So that all list screens and delete flows across Epics 3–5 have a consistent, design-reviewed UX.
+
+**Acceptance Criteria:**
+
+**Given** the core_ui package exists with design tokens and base widgets
+**When** the feedback and confirmation components are implemented
+**Then** `HivesEmptyState` accepts `title`, `subtitle`, optional `ctaLabel`/`onCta`, and an `illustration` widget; renders vertically centered with 96px illustration, 18px SemiBold title, 15px `#A8A29E` subtitle, and optional primary CTA button; variants: `noLocations`, `noHives`, `noTasks`, `noResults`
+**And** `HivesDangerButton` matches `PrimaryButton` sizing (54px height, 16px radius), fills `#EF4444`, applies `0 6px 16px rgba(239,68,68,0.30)` shadow, supports `loading` (spinner) and `disabled` (low opacity) states
+**And** `HivesConfirmDialog` is a bottom sheet (28px top radius) accepting `icon`, `title`, `body`, `confirmLabel`, `onConfirm`, `onCancel`; renders icon 48px top-center, title 18px SemiBold, body 15px `#A8A29E`, `HivesDangerButton` confirm + ghost cancel; variants: `danger` (red) and `warning` (amber)
+**And** all components are exported via `package:ui/ui.dart`
+**And** each component has a Widgetbook story documenting all variants and states
+**And** `dart analyze` passes with zero issues and all widget tests pass
+
+---
+
+### Story 1.12: Location & Map Components
+
+As a developer,
+I want location card and map preview components in the widget library,
+So that Epic 3 location screens have design-reviewed, reusable building blocks.
+
+**Acceptance Criteria:**
+
+**Given** the core_ui package exists with design tokens and base widgets
+**When** the location and map components are implemented
+**Then** `LocationCard` renders full-width × 88px with 20px radius, a 5px left accent bar (teal `#14B8A6` healthy / amber attention / red urgent / gray empty), location name in 16px SemiBold, hive count + status summary in 13px `#A8A29E`, right chevron, `0 4px 16px rgba(0,0,0,0.06)` shadow; includes `loading` shimmer variant; accepts `onTap` callback
+**And** `MapPreviewWidget` renders full-width × 160px with 20px radius, displays a map tile (placeholder image acceptable for Widgetbook) with a teal `#14B8A6` pin marker (36px) centered at given coordinates; `noPinSet` variant shows gray placeholder with "Tap to set location" label; tappable via `onTap` callback; `loading` shimmer variant
+**And** all components are exported via `package:ui/ui.dart`
+**And** each component has a Widgetbook story documenting all variants and states
+**And** `dart analyze` passes with zero issues and all widget tests pass
+
+---
+
+### Story 1.13: Hive Card System
+
+As a developer,
+I want the complete hive card component family in the widget library,
+So that Epic 4 hive list and dashboard screens have the vibrant, status-coded cards defined in the UX spec.
+
+**Acceptance Criteria:**
+
+**Given** the core_ui package exists with design tokens and base widgets
+**When** the hive card system is implemented
+**Then** `HiveCardTile` renders ~160 × 150px with 24px radius, tinted status fill background (`#DCFCE7` healthy / `#FEF3C7` attention / `#FEE2E2` urgent / `#F1F5F9` unknown), 48px illustrated hive icon placeholder, hive name 15px SemiBold, last-inspected label 12px `#A8A29E`, 28px status badge top-right; `loading` shimmer variant on `#F5F5F4`
+**And** `HiveCardSimple` renders full-width × 110px with 20px radius, 5px status-colored rounded left accent bar, hive name 16px SemiBold, status summary 13px `#A8A29E`, 28px status badge right, `0 4px 16px rgba(0,0,0,0.06)` shadow; `loading` shimmer variant
+**And** `HiveCardCompact` renders full-width × 80px with 16px radius, 5px left status bar, hive name 15px SemiBold, timestamp + last observation 13px `#A8A29E`, no status badge; `loading` shimmer variant
+**And** `HiveCardSkeleton` provides explicit shimmer placeholders for `tile` (160 × 150px) and `simple` (full × 110px) variants: warm gray `#F5F5F4` base, `#EBEBEB` highlight sweep, 1.2s loop
+**And** all four status variants (healthy, attention, urgent, unknown) are supported on each card type
+**And** all components are exported via `package:ui/ui.dart`
+**And** each component has a Widgetbook story documenting all variants and states
+**And** `dart analyze` passes with zero issues and all widget tests pass
+
+---
+
+### Story 1.14: Form & Layout Utility Components
+
+As a developer,
+I want date picker, collapsible form section, and section header components in the widget library,
+So that Epic 4 forms and all subsequent list screens have consistent, design-reviewed layout building blocks.
+
+**Acceptance Criteria:**
+
+**Given** the core_ui package exists with design tokens and base widgets
+**When** the form and layout utility components are implemented
+**Then** `HivesDatePicker` renders identically to `HivesTextField` (inherits theming), is read-only tap-triggered, shows calendar icon suffix `#A8A29E`, opens `showDatePicker()` on tap, formats output as "d MMMM yyyy"; variants: `empty` (placeholder "Select date"), `filled`, `disabled`, `error` (red border + message)
+**And** `HivesFormSection` accepts `title`, `isCollapsible` (default true), `isInitiallyExpanded` (default false), and `child` widget; renders 15px SemiBold header with animated chevron; animates expand/collapse with 300ms ease-in-out; shows 1px `#E7E5E4` separator above header; `required` variant (non-collapsible) always visible
+**And** `HivesSectionHeader` accepts `title` and optional `actionLabel` + `onAction`; renders 18px SemiBold `#1C1917` title and optional 14px Medium `#F59E0A` text action in a space-between row; respects 20px screen margin; variants: `withAction` and `standalone`
+**And** all components are exported via `package:ui/ui.dart`
+**And** each component has a Widgetbook story documenting all variants and states
+**And** `dart analyze` passes with zero issues and all widget tests pass
+
+---
+
 ## Epic 2: User Authentication
 
 Users can create accounts and securely access their data. Implements AWS Cognito integration with sign up, sign in, sign out, and password recovery flows.
