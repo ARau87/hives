@@ -53,9 +53,9 @@ development_status:
   1-9-app-shell-with-navigation: done
   1-10-auth-ui-components: done
   1-11-feedback-and-confirmation-components: done
-  1-12-location-and-map-components: backlog
-  1-13-hive-card-system: backlog
-  1-14-form-and-layout-utility-components: backlog
+  1-12-location-and-map-components: done
+  1-13-hive-card-system: done
+  1-14-form-and-layout-utility-components: done
   epic-1-retrospective: optional
 
   # Epic 2: User Authentication

@@ -4,7 +4,10 @@ library ui;
 export 'src/components/auth/auth.dart';
 export 'src/components/buttons/buttons.dart';
 export 'src/components/feedback/feedback.dart';
+export 'src/components/forms/forms.dart';
+export 'src/components/hives/hives.dart';
 export 'src/components/inputs/inputs.dart';
+export 'src/components/locations/locations.dart';
 export 'src/components/surfaces/surfaces.dart';
 export 'src/components/typography/typography.dart';
 // Extensions

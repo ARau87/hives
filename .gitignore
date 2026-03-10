@@ -134,4 +134,7 @@ build/
 # vm.json files
 *vm.json
 
+# Screenshots for Context
+screenshots/
+
 
