@@ -1,8 +1,7 @@
 /// Authentication feature package for the Hives project.
 ///
-/// Exports the complete authentication domain model following DDD patterns.
-/// Story 2.1 covers the domain layer only; data and presentation layers
-/// are added in subsequent stories (2.2–2.8).
+/// Exports the authentication domain model (Story 2.1) and data layer
+/// (Story 2.2). Presentation layer added in Stories 2.5–2.8.
 ///
 /// ## Domain Model
 ///
@@ -15,7 +14,8 @@
 /// - [Password] — strength-validated password (factory with Either)
 ///
 /// **Repository Interface:**
-/// - [AuthenticationRepository] — signUp, signIn, signOut, resetPassword, getCurrentUser
+/// - [AuthenticationRepository] — signUp, confirmSignUp, signIn, signOut,
+///   resetPassword, confirmForgotPassword, getCurrentUser
 ///
 /// **Exceptions:**
 /// - [AuthException] — base
@@ -42,3 +42,16 @@ export 'package:authentication/domain/exceptions/auth_exceptions.dart';
 
 // Domain events
 export 'package:authentication/domain/events/auth_events.dart';
+
+// Data sources
+export 'package:authentication/data/datasources/auth_remote_datasource.dart';
+export 'package:authentication/data/datasources/cognito_datasource.dart';
+
+// Local data source
+export 'package:authentication/data/datasources/auth_local_datasource.dart';
+
+// Repository implementation
+export 'package:authentication/data/repositories/auth_repository_impl.dart';
+
+// DTOs
+export 'package:authentication/data/dtos/cognito_auth_result.dart';

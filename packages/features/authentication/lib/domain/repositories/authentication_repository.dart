@@ -51,4 +51,25 @@ abstract class AuthenticationRepository {
   ///
   /// Checks secure storage for a valid token and refreshes if needed.
   Future<Either<AuthException, UserAggregate?>> getCurrentUser();
+
+  /// Confirms a new user's sign-up with the [confirmationCode] sent to
+  /// their [email].
+  ///
+  /// Returns [Unit] on success, or [InvalidCredentials] if the code is
+  /// invalid or expired.
+  Future<Either<AuthException, Unit>> confirmSignUp({
+    required Email email,
+    required String confirmationCode,
+  });
+
+  /// Completes the password reset flow with the [code] sent to [email]
+  /// and the user's chosen [newPassword].
+  ///
+  /// Returns [Unit] on success, or [InvalidCredentials] / [WeakPassword]
+  /// on failure.
+  Future<Either<AuthException, Unit>> confirmForgotPassword({
+    required Email email,
+    required String code,
+    required Password newPassword,
+  });
 }

@@ -10,7 +10,13 @@ dependencies:
     sdk: flutter
   shared: 0.0.1
   fpdart: ^1.2.0
+  amazon_cognito_identity_dart_2: ^3.0.0
+  injectable: ^2.5.0
+  flutter_secure_storage: ^9.2.4
+  core_infrastructure: 0.0.1
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  mockito: ^5.4.0
+  build_runner: ^2.4.15
