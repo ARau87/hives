@@ -1,7 +1,8 @@
 /// Authentication feature package for the Hives project.
 ///
-/// Exports the authentication domain model (Story 2.1) and data layer
-/// (Story 2.2). Presentation layer added in Stories 2.5–2.8.
+/// Exports the authentication domain model (Story 2.1), data layer
+/// (Story 2.2), and BLoC state management (Story 2.4).
+/// UI presentation layer added in Stories 2.5–2.8.
 ///
 /// ## Domain Model
 ///
@@ -55,3 +56,12 @@ export 'package:authentication/data/repositories/auth_repository_impl.dart';
 
 // DTOs
 export 'package:authentication/data/dtos/cognito_auth_result.dart';
+
+// Presentation - BLoC
+export 'package:authentication/presentation/bloc/auth_bloc.dart';
+export 'package:authentication/presentation/bloc/auth_event.dart';
+export 'package:authentication/presentation/bloc/auth_state.dart';
+
+// Presentation - Pages
+export 'package:authentication/presentation/pages/sign_up_page.dart';
+export 'package:authentication/presentation/pages/email_verification_page.dart';

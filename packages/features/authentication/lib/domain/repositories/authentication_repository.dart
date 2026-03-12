@@ -38,6 +38,13 @@ abstract class AuthenticationRepository {
   /// Returns [Unit] on success (void equivalent in fpdart).
   Future<Either<AuthException, Unit>> signOut();
 
+  /// Resends the confirmation code to [email] for a pending sign-up.
+  ///
+  /// Returns [Unit] on success, or [NetworkError] on connectivity failure.
+  Future<Either<AuthException, Unit>> resendConfirmationCode({
+    required Email email,
+  });
+
   /// Initiates the password reset flow for [email].
   ///
   /// Sends a verification code to the email address. For security, a

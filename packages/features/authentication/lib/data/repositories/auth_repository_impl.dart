@@ -120,6 +120,20 @@ class AuthRepositoryImpl implements AuthenticationRepository {
   }
 
   @override
+  Future<Either<AuthException, Unit>> resendConfirmationCode({
+    required Email email,
+  }) async {
+    try {
+      await _remoteDataSource.resendConfirmationCode(email: email.value);
+      return const Right(unit);
+    } on AuthException catch (e) {
+      return Left(e);
+    } catch (e) {
+      return Left(NetworkError(e.toString()));
+    }
+  }
+
+  @override
   Future<Either<AuthException, Unit>> resetPassword({
     required Email email,
   }) async {

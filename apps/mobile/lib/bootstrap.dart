@@ -8,6 +8,7 @@ import 'package:mobile/config/env.dart';
 import 'package:mobile/config/flavors.dart';
 import 'package:mobile/config/router.dart';
 
+
 /// Shared bootstrap logic for all flavor entry points.
 ///
 /// Initializes dependency injection, registers the router and
@@ -19,14 +20,6 @@ Future<void> bootstrap(AppEnvironment environment) async {
 
   // Initialize auto-generated DI registrations (EventBus, etc.)
   configureInjection();
-
-  // Register router and navigation service manually
-  // (NavigationService depends on GoRouter which needs routes first)
-  final router = appRouter();
-  getIt.registerSingleton(router);
-  getIt.registerSingleton<NavigationService>(
-    GoRouterNavigationService(router),
-  );
 
   // Store config for later access
   getIt.registerSingleton(config);
@@ -53,6 +46,19 @@ Future<void> bootstrap(AppEnvironment environment) async {
       localDataSource: getIt<AuthLocalDataSource>(),
       eventBus: getIt<EventBus>(),
     ),
+  );
+
+  // Register AuthBloc before the router — appRouter() subscribes to its stream
+  // via refreshListenable so it can react to auth state changes.
+  getIt.registerLazySingleton<AuthBloc>(
+    () => AuthBloc(getIt<AuthenticationRepository>()),
+  );
+
+  // Register router and navigation service after AuthBloc is registered.
+  final router = appRouter();
+  getIt.registerSingleton(router);
+  getIt.registerSingleton<NavigationService>(
+    GoRouterNavigationService(router),
   );
 
   runApp(const HivesApp());

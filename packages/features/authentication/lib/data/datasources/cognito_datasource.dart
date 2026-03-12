@@ -24,7 +24,7 @@ class CognitoDataSource implements AuthRemoteDataSource {
     required CognitoUserPool userPool,
     CognitoUserFactory? userFactory,
   })  : _userPool = userPool,
-        _userFactory = userFactory ?? (email, pool) => CognitoUser(email, pool);
+        _userFactory = userFactory ?? ((String email, CognitoUserPool pool) => CognitoUser(email, pool));
 
   final CognitoUserPool _userPool;
   final CognitoUserFactory _userFactory;
@@ -122,6 +122,20 @@ class CognitoDataSource implements AuthRemoteDataSource {
         await _cognitoUser!.signOut();
         _cognitoUser = null;
       }
+    } on SocketException catch (e) {
+      throw NetworkError(e.message);
+    } catch (e) {
+      throw NetworkError(e.toString());
+    }
+  }
+
+  @override
+  Future<void> resendConfirmationCode({required String email}) async {
+    try {
+      final cognitoUser = _userFactory(email, _userPool);
+      await cognitoUser.resendConfirmationCode();
+    } on CognitoClientException catch (e) {
+      throw _mapCognitoException(e);
     } on SocketException catch (e) {
       throw NetworkError(e.message);
     } catch (e) {

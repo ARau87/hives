@@ -36,6 +36,11 @@ abstract class AuthRemoteDataSource {
   /// Throws [NetworkError] on failure.
   Future<void> signOut();
 
+  /// Resends the confirmation code to [email] for a pending sign-up.
+  ///
+  /// Throws [NetworkError] on connectivity failure.
+  Future<void> resendConfirmationCode({required String email});
+
   /// Initiates password reset flow by sending a code to [email].
   ///
   /// Never throws [UserNotFound] for security (always succeeds from caller's perspective).
